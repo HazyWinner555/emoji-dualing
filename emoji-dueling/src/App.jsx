@@ -15,12 +15,11 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path={`/${roomLink}`} element={<Lobby />} />
-          <Route path={`/${roomLink}/start`} element={<Start />} />
-          <Route path={`/${roomLink}/duel`} element={<Duel />} />
-          <Route path={`/${roomLink}/gameover`} element={<Gameover />} />
+          <Route path={`/lobby`} element={<Lobby />} />
+          <Route path={`/lobby/start`} element={<Start />} />
+          <Route path={`/lobby/duel`} element={<Duel />} />
+          <Route path={`/lobby/gameover`} element={<Gameover />} />
         </Routes>
-
       </BrowserRouter>
     </>
   )
