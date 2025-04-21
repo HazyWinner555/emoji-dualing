@@ -7,7 +7,8 @@ function JoinRoom() {
             <div className="joinRoomContainer">
                 Room Code
                 <input type="text" placeholder="Room Code" />
-                <button onClick={() => { navigate(`/${joinRoomLink}`) }}>Join Room</button>
+                <button onClick={() => { navigate(`/lobby`) }}>Join Room</button>
+                {/* Routes need to be updated to take dynamic room codes. */}
             </div>
         </>
     )
