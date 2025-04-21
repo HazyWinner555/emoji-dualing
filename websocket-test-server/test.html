@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+</head>
+<body>
+<button onclick="connect()">Connect</button>
+<button onclick="sendJoin()">Send JOIN</button>
+<button onclick="sendReact()">Send REACT</button>
+<button onclick="disconnect()">Disconnect</button>
+<div id="messages"></div>
+
+<script>
+    let socket;
+
+    function connect() {
+        socket = new WebSocket('ws://localhost:8080/game');
+
+        socket.onopen = function(e) {
+            log("Connection established");
+        };
+
+        socket.onmessage = function(event) {
+            log("Received: " + event.data);
+        };
+
+        socket.onclose = function(event) {
+            log("Connection closed");
+        };
+
+        socket.onerror = function(error) {
+            log("Error: " + error.message);
+        };
+    }
+
+    function sendJoin() {
+        if (socket) {
+            socket.send("JOIN");
+            log("Sent: JOIN");
+        }
+    }
+
+    function sendReact() {
+        if (socket) {
+            const reactTime = Date.now();
+            socket.send("REACT:" + reactTime);
+            log("Sent: REACT:" + reactTime);
+        }
+    }
+
+    function disconnect() {
+            if (socket) {
+                socket.close();
+                log("Disconnected manually");
+            }
+        }
+
+    function log(message) {
+        const messagesDiv = document.getElementById('messages');
+        messagesDiv.innerHTML += message + '<br>';
+    }
+</script>
+</body>
+</html>
