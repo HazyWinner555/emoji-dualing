@@ -6,3 +6,9 @@
     justify-content: baseline;
     height: 50px;
 }
+
+.container {
+    background-color: orange;
+    background:            linear-gradient(to top, red, purple);
+    background-attachment: fixed; /*edit*/
+}
