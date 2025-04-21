@@ -28,20 +28,43 @@ public class test_handler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
 
-        // handling reaction time messages
-        if(payload.startsWith("REACT")) {
-            long reactionTime = Long.parseLong(payload.split(":")[1]);
+        String[] parts = payload.split(":");
+        String command = parts[0];
 
-            //find room containing player and record reaction
-            rooms.values().stream()
-                    .filter(room -> room.containsPlayer(session.getId()))
-                    .findFirst()
-                    .ifPresent(room -> room.recordReaction(new Player("player-" + session.getId(), session), reactionTime, rooms));
-        }
+        switch (command) {
+            case "REACT":
+                long reactionTime = Long.parseLong(parts[1]);
+                rooms.values().stream()
+                        .filter(room -> room.containsPlayer(session.getId()))
+                        .findFirst()
+                        .ifPresent(room -> {
+                            long currentTime = System.currentTimeMillis();
+                            if (currentTime >= room.getStartTime()) {
+                                room.recordReaction(new Player("player-" + session.getId(), session), reactionTime, rooms);
+                            } else {
+                                System.out.println("Invalid REACT: No REACT_NOW message sent");
+                            }
+                        });
+                break;
 
-        if (payload.startsWith("JOIN")) {
-            // find room and assign player to room
-            Room.assignToRoom(new Player("player-" + session.getId(), session), rooms);
+            case "JOIN":
+                Room.assignToRoom(new Player("player-" + session.getId(), session), rooms);
+                break;
+
+            case "LEAVE":
+                rooms.values().stream()
+                        .filter(room -> room.containsPlayer(session.getId()))
+                        .findFirst()
+                        .ifPresent(room -> room.removePlayer(session.getId()));
+                break;
+
+            case "DEBUG_LIST_ROOMS":
+                rooms.values().stream().forEach(room -> System.out.println(session.getId()));
+                break;
+
+            default:
+                System.out.println("Unknown command: " + command);
+                break;
         }
     }
 

@@ -8,6 +8,8 @@
 <button onclick="sendJoin()">Send JOIN</button>
 <button onclick="sendReact()">Send REACT</button>
 <button onclick="disconnect()">Disconnect</button>
+<button onclick="leave()">Leave Queue</button>
+<button onclick="log('Sent: DEBUG_LIST_ROOMS'); socket.send('DEBUG_LIST_ROOMS');">Debug List Rooms</button>
 <div id="messages"></div>
 
 <script>
@@ -54,6 +56,13 @@
                 log("Disconnected manually");
             }
         }
+
+    function leave() {
+        if (socket) {
+            socket.send("LEAVE");
+            log("Sent: LEAVE");
+        }
+    }
 
     function log(message) {
         const messagesDiv = document.getElementById('messages');

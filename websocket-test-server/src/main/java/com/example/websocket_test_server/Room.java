@@ -40,7 +40,7 @@ public class Room {
         // find room a room with 1 player first
         Room availibleRoom = rooms.values()
                 .stream()
-                .filter(room -> room.player2 == null)
+                .filter(room -> room.player2 == null && !room.player1.getId().equals(player.getId())) // now makes sure you can't join your own room
                 .findFirst()
                 .orElse(null);
 
@@ -66,6 +66,10 @@ public class Room {
 
     public Player getPlayer2() {
         return player2;
+    }
+
+    public long getStartTime() {
+        return startTime;
     }
 
     public void setPlayer2(Player player2) {
@@ -117,6 +121,7 @@ public class Room {
             startRound();
         } else {
             // Clean up room if a player left
+            endGame();
             Room.removeRoom(roomID, rooms);
         }
     }
@@ -128,6 +133,16 @@ public class Room {
             } catch (IOException e) {
                 System.out.println("server blocked your message smh, player id: " + player.getId());
             }
+        }
+    }
+
+    public void endGame() {
+        if (player1 != null && player2 != null) {
+            sendMessageToPlayer(player1, "GAME_END:" + roomID);
+            sendMessageToPlayer(player2, "GAME_END:" + roomID);
+        }
+        else if (player1.getId().equals(player2.getId())) {
+            sendMessageToPlayer(player1, "GAME_END:" + roomID);
         }
     }
 }
