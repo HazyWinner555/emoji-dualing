@@ -3,9 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './Pages/Home';
 import Gameover from './Pages/Gameover';
 import Duel from './Pages/Duel';
-import Setup from './Pages/Setup';
-import Host from './Pages/Host';
 import "./App.css"
+import Lobby from './Pages/Lobby';
+import Start from './Pages/Start';
 
 function App() {
 
@@ -15,8 +15,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path={`/${roomLink}`} element={<Host />} />
-          <Route path={`/${roomLink}/setup`} element={<Setup />} />
+          <Route path={`/${roomLink}`} element={<Lobby />} />
+          <Route path={`/${roomLink}/start`} element={<Start />} />
           <Route path={`/${roomLink}/duel`} element={<Duel />} />
           <Route path={`/${roomLink}/gameover`} element={<Gameover />} />
         </Routes>
