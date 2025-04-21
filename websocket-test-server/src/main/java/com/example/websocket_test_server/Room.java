@@ -5,6 +5,7 @@ import org.springframework.web.socket.TextMessage;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -15,7 +16,13 @@ public class Room {
     private long startTime; // timestamp when the reaction signal will be sent
 
     public Room(Player p1) {
-        this.roomID = "room-" + System.currentTimeMillis(); // better id system later
+        Random rand = new Random();
+        String charx = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder id = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            id.append(charx.charAt(rand.nextInt(charx.length())));
+        }
+        this.roomID = id.toString();
         this.player1 = p1;
         this.player2 = null;
     }

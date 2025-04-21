@@ -10,6 +10,8 @@
 <button onclick="disconnect()">Disconnect</button>
 <button onclick="leave()">Leave Queue</button>
 <button onclick="log('Sent: DEBUG_LIST_ROOMS'); socket.send('DEBUG_LIST_ROOMS');">Debug List Rooms</button>
+<input type="text" id="gameName" placeholder="Game ID">
+<button onclick="joinGame()">Join Game</button>
 <div id="messages"></div>
 
 <script>
@@ -61,6 +63,14 @@
         if (socket) {
             socket.send("LEAVE");
             log("Sent: LEAVE");
+        }
+    }
+
+    function joinGame() {
+        if (socket) {
+            const gameName = document.getElementById('gameName').value;
+            socket.send("JOIN_ROOM:" + gameName);
+            log("Sent: JOIN_ROOM:" + gameName);
         }
     }
 
