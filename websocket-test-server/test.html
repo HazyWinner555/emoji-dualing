@@ -5,11 +5,12 @@
 </head>
 <body>
 <button onclick="connect()">Connect</button>
-<button onclick="sendJoin()">Send JOIN</button>
+<button onclick="sendCreateRoom()">Send CREATE_ROOM</button>
 <button onclick="sendReact()">Send REACT</button>
 <button onclick="disconnect()">Disconnect</button>
 <button onclick="leave()">Leave Queue</button>
 <button onclick="log('Sent: DEBUG_LIST_ROOMS'); socket.send('DEBUG_LIST_ROOMS');">Debug List Rooms</button>
+<button onclick="log('Sent: PLAYER_LIST'); socket.send('PLAYER_LIST');">Player List</button>
 <input type="text" id="gameName" placeholder="Game ID">
 <button onclick="joinGame()">Join Game</button>
 <div id="messages"></div>
@@ -39,8 +40,15 @@
 
     function sendJoin() {
         if (socket) {
-            socket.send("JOIN");
+            //socket.send("JOIN");
             log("Sent: JOIN");
+        }
+    }
+
+    function sendCreateRoom() {
+        if (socket) {
+            socket.send("CREATE_ROOM");
+            log("Sent: CREATE_ROOM");
         }
     }
 

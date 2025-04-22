@@ -1,20 +1,22 @@
 package com.example.websocket_test_server;
 
+import java.util.UUID;
+
 import org.springframework.web.socket.WebSocketSession;
 
 public class Player {
-    private final String id;
+    private final UUID id;
     private final WebSocketSession channel;
     private int score;
 
-    public Player(String id, WebSocketSession channel) {
+    public Player(UUID id, WebSocketSession channel) {
         this.id = id;
         this.channel = channel;
         this.score = 0;
     }
 
     // get the stuff
-    public String getId() { return id; }
+    public UUID getId() { return id; }
     public WebSocketSession getChannel() { return channel; }
     public int getScore() { return score; }
 
