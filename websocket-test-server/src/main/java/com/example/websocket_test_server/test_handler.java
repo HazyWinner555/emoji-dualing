@@ -18,13 +18,16 @@ public class test_handler extends TextWebSocketHandler {
         this.rooms = new ConcurrentHashMap<>(rooms);
     }
 
-    /* @Override
+    @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        // create new player then assign to room
-        Player player = new Player("player-" + session.getId(), session);
-        Room.assignToRoom(player, rooms);
+    // check for roomID in URL parameters
+    String query = session.getUri().getQuery();
+    if (query != null && query.contains("room=")) {
+        String roomId = query.split("room=")[1].split("&")[0];
+        Player player = new Player(UUID.fromString(session.getId()), session);
+        Room.assignToRoom(player, rooms, roomId);
     }
-    */
+}
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -115,7 +118,7 @@ public class test_handler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, org.springframework.web.socket.CloseStatus status) throws Exception {
     // removes player from the room when closed
     rooms.values().forEach(room -> room.removePlayer(UUID.fromString(session.getId())));
-}
+    }
 
     public void removeRoom(String roomID) {
         rooms.remove(roomID);

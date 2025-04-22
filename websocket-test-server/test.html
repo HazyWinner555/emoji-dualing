@@ -9,10 +9,17 @@
 <button onclick="sendReact()">Send REACT</button>
 <button onclick="disconnect()">Disconnect</button>
 <button onclick="leave()">Leave Queue</button>
-<button onclick="log('Sent: DEBUG_LIST_ROOMS'); socket.send('DEBUG_LIST_ROOMS');">Debug List Rooms</button>
-<button onclick="log('Sent: PLAYER_LIST'); socket.send('PLAYER_LIST');">Player List</button>
+<!-- <button onclick="log('Sent: DEBUG_LIST_ROOMS'); socket.send('DEBUG_LIST_ROOMS');">Debug List Rooms</button> -->
+<!-- <button onclick="log('Sent: PLAYER_LIST'); socket.send('PLAYER_LIST');">Player List</button> -->
 <input type="text" id="gameName" placeholder="Game ID">
 <button onclick="joinGame()">Join Game</button>
+<!-- <div id="room-created" style="display:none">
+    <p>Share this link:</p>
+    <input type="text" id="room-link" readonly>
+    <button id="copy-btn">Copy</button>
+  </div>
+</div> -->
+<!-- this wouldn't work yet because we're using local pages and not localhost itself smh -->
 <div id="messages"></div>
 
 <script>
@@ -27,6 +34,12 @@
 
         socket.onmessage = function(event) {
             log("Received: " + event.data);
+            if (event.data.startsWith("ROOM_CREATED:")) {
+                const roomId = event.data.split(":")[1];
+                const roomLink = `http://localhost:8080?room=${roomId}`;
+                document.getElementById('room-link').value = roomLink;
+                document.getElementById('room-created').style.display = 'block';
+            }
         };
 
         socket.onclose = function(event) {
