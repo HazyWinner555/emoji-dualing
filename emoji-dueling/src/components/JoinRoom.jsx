@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 
 function JoinRoom() {
-
+    const navigate = useNavigate()
     return (
         <>
             <div className="joinRoomContainer">
