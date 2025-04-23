@@ -1,4 +1,11 @@
 .joinRoomContainer {
+    
+}
+
+.container input {
+    background-color:white;
+    border-color: #868686;
+    color:black;
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -7,8 +14,3 @@
     height: 50px;
 }
 
-.container {
-    background-color: orange;
-    background:            linear-gradient(to top, red, purple);
-    background-attachment: fixed; /*edit*/
-}

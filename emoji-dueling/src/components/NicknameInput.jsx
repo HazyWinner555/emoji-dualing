@@ -6,7 +6,7 @@ function NickNameInput() {
         <>
             <div>
 
-                <p>Nickname 😈</p>
+                <p>Nickname</p>
                 <input type="text" placeholder="Moji Master 😈" />
             </div>
         </>
