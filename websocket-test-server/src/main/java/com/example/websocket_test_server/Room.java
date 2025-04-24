@@ -15,6 +15,7 @@ public class Room {
     private Player player1;
     private Player player2;
     private long startTime; // timestamp when the reaction signal will be sent
+    private int answer; // correct answer
 
     public Room(Player p1) {
         Random rand = new Random();
@@ -51,7 +52,8 @@ public class Room {
             if (selectedRoom != null && selectedRoom.player2 == null && 
                 !selectedRoom.player1.getId().equals(player.getId())) {
                 selectedRoom.player2 = player;
-                selectedRoom.startGame();
+                selectedRoom.notifyPlayerJoined(player);
+                //selectedRoom.startGame(); // shouldn't automatically start anymore
                 return;
             }
         }
@@ -86,6 +88,7 @@ public class Room {
         this.player2 = player2;
     }
 
+    /* 
     public void startGame() {
         // notifying both players
         if (player1 != null && player2 != null) {
@@ -94,16 +97,23 @@ public class Room {
             startRound();
         }
     }
+    */ // removed
 
     // schedules reaction signal between 1-3 seconds
     private Timer reactionTimer;
 
+    /*
     public void startRound() {
+        if (gameOver) {
+            System.out.println("Cannot start round - game over");
+            return;
+        }
+        resetGame();
         this.startTime = System.currentTimeMillis() + 1000 + (long) (Math.random() * 2000);
         if (reactionTimer != null) {
             reactionTimer.cancel();
         }
-        reactionTimer = new Timer();
+        // reactionTimer = new Timer();
         reactionTimer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -112,58 +122,124 @@ public class Room {
             }
         }, startTime - System.currentTimeMillis());
     }
+    */ // deprecated
 
-    public void recordReaction(Player player, long reactionTime, Map<String, Room> rooms) {
-        if (player1 == null || player2 == null) {
-            System.out.println("Cannot record reaction - missing players");
+    public void sendReactionInfo(long timestamp, int answer, Map<String, Room> rooms) {
+        if (gameOver || player1 == null || player2 == null) {
+            System.out.println("Cannot get reaction info - game state invalid");
             return;
         }
     
-        // verify the player is actually in this room
-        if (!containsPlayer(player.getId())) {
-            System.out.println("Player " + player.getId() + " not in this room");
+        // verify player is in room
+        if (!containsPlayer(player1.getId()) || !containsPlayer(player2.getId())) {
+            System.out.println("Player not in room");
             return;
         }
     
-        System.out.println("Recording reaction for player " + player.getId() + 
-                          " at time " + reactionTime + 
-                          " (startTime was " + startTime + ")");
-    
-        long latency = reactionTime - startTime;
-        System.out.println("Calculated latency: " + latency + "ms");
-    
-        if (latency < 0) {
+        if (timestamp < startTime) {
             System.out.println("Invalid reaction - too early");
             return;
         }
+          
+        // save reaction info
+        this.startTime = timestamp;
+        this.answer = answer;
+        rooms.put(roomID, this);
+    }
+
+    public void recordReaction(Player reactingPlayer, long reactionTime, int playerAnswer) {
+        if (gameOver || player1 == null || player2 == null) {
+            System.out.println("Cannot record reaction - invalid game state");
+            return;
+        }
+
+        // validate reaction timing
+        long reactionLatency = reactionTime - startTime;
+        if (reactionLatency < 0) {
+            System.out.println("Invalid reaction - too early");
+            return;
+        }
+
+        // determine if answer is correct (after speed check)
+        boolean isCorrect = (playerAnswer == this.answer);
+        
+        // find the opponent
+        Player opponent = reactingPlayer.getId().equals(player1.getId()) ? player2 : player1;
+        
+        // process results
+        if (!isCorrect) {
+            reactingPlayer.removeLife();
+            System.out.println(reactingPlayer.getId() + " answered incorrectly");
+        } else if (reactionLatency > 2000) { // 2 second cutoff
+            reactingPlayer.removeLife();
+            System.out.println(reactingPlayer.getId() + " reacted too slowly");
+        }
+
+        if(isCorrect) {
+            System.out.println(reactingPlayer.getId() + " answered correctly");
+            opponent.removeLife();
+        }
+
+        // Send life updates to both players
+        sendLifeUpdates();
+        
+        // Check game over condition
+        if (player1.getLives() <= 0 || player2.getLives() <= 0) {
+            endGame();
+        }
+    }
+
+    private void sendLifeUpdates() {
+        String livesUpdate = String.format("LIVES:%s: %s: %d: %s: %s: %d",
+            player1.getId(), player1.getUsername(), player1.getLives(),
+            player2.getId(), player2.getUsername(),player2.getLives());
+        sendMessageToPlayer(player1, livesUpdate);
+        sendMessageToPlayer(player2, livesUpdate);
+    }
+
     
-        int points = (int) Math.max(0, 1000 - latency);
-        System.out.println("Awarding points: " + points);
+    boolean player1Ready = false, player2Ready = false, gameOver = false;
     
-        // Update scores
+    public void setReady(Player player) {
         if (player.getId().equals(player1.getId())) {
-            player1 = player1.withAddedScore(points);
+            player1Ready = true;
         } else if (player.getId().equals(player2.getId())) {
-            player2 = player2.withAddedScore(points);
+            player2Ready = true;
         }
     
-        // send updated scores
-        String scores = String.format("SCORES:%s:%d:%s:%d",
-                player1.getId(), player1.getScore(),
-                player2.getId(), player2.getScore());
-        
-        System.out.println("Sending scores: " + scores);
-        sendMessageToPlayer(player1, scores);
-        sendMessageToPlayer(player2, scores);
+        if (player1Ready && player2Ready && !gameOver) {
+            // reset lives only when starting new game
+            if (player1 != null) player1.setLives(3);
+            if (player2 != null) player2.setLives(3);
+            
+            sendMessageToPlayer(player1, "GAME_START:" + roomID);
+            sendMessageToPlayer(player2, "GAME_START:" + roomID);
+            //startRound();
+        }
+    }
+
     
-        // start next round if both players still present
+    public void setUnready(Player player) {
+        if (player.getId().equals(player1.getId())) {
+            player1Ready = false;
+        } else if (player.getId().equals(player2.getId())) {
+            player2Ready = false;
+        }
+    }
+
+    public void notifyPlayerJoined(Player player) {
         if (player1 != null && player2 != null) {
-            System.out.println("Starting new round...");
-            startRound();
-        } else {
-            System.out.println("Ending game - player left");
-            endGame();
-            Room.removeRoom(roomID, rooms);
+            String player1Info = "PLAYER_JOINED:" + player2.getUsername();
+            String player2Info = "PLAYER_JOINED:" + player1.getUsername();
+            sendMessageToPlayer(player1, player1Info);
+            sendMessageToPlayer(player2, player2Info);
+
+            String roomInfo = String.format("ROOM_INFO:%s: %s: %d, %s: %d", 
+             roomID,
+             player1.getUsername(), player1.getLives(),
+             player2.getUsername(), player2.getLives());
+            
+            sendMessageToPlayer(player, roomInfo);
         }
     }
 
@@ -175,24 +251,38 @@ public class Room {
                 System.out.println("server blocked your message smh, player id: " + player.getId());
             }
         }
-        if (message.equals("REACT")) {
-            sendMessageToPlayer(player, "REACTION_ACK");
-        }
+    }
+
+    public void resetGame() {
+        gameOver = false;   
+        player1Ready = false;
+        player2Ready = false;
     }
 
 
     public void endGame() {
+        gameOver = true;
         if (reactionTimer != null) {
             reactionTimer.cancel();
             reactionTimer = null;
         }
-        if (player1 != null && player2 != null) {
-            sendMessageToPlayer(player1, "GAME_END:" + roomID);
-            sendMessageToPlayer(player2, "GAME_END:" + roomID);
-        } else if (player1 != null) {
-            sendMessageToPlayer(player1, "GAME_END:" + roomID);
-        } else if (player2 != null) {
-            sendMessageToPlayer(player2, "GAME_END:" + roomID);
+        
+        // send final results
+        String results = String.format("FINAL_RESULTS:%s:%d:%s:%d",
+                player1.getId(), player1.getWins().size(),
+                player2.getId(), player2.getWins().size());
+        
+        if (player1 != null) {
+            sendMessageToPlayer(player1, results);
+            sendMessageToPlayer(player1, "GAME_OVER");
         }
+        if (player2 != null) {
+            sendMessageToPlayer(player2, results);
+            sendMessageToPlayer(player2, "GAME_OVER");
+        }
+        
+        // Reset ready states
+        player1Ready = false;
+        player2Ready = false;
     }
 }

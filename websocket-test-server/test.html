@@ -2,6 +2,17 @@
 <html>
 <head>
     <title>WebSocket Test</title>
+    <style>
+        body {
+            background-color: #222;
+            color: #fff;
+        }
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+        }
+    </style>
 </head>
 <body>
 <button onclick="connect()">Connect</button>
@@ -13,13 +24,26 @@
 <!-- <button onclick="log('Sent: PLAYER_LIST'); socket.send('PLAYER_LIST');">Player List</button> -->
 <input type="text" id="gameName" placeholder="Game ID">
 <button onclick="joinGame()">Join Game</button>
-<!-- <div id="room-created" style="display:none">
+<button onclick="readyUp()">Ready Up</button>
+<button onclick="unready()">Unready</button>
+<button onclick="rematch()">Rematch</button>
+<button onclick="sendReactionInfo1()">Send Reaction Info 1</button>
+<button onclick="sendReactionInfo2()">Send Reaction Info 2</button>
+<button onclick="sendReactionInfo3()">Send Reaction Info 3</button>
+<button onclick="sendReactionInfo4()">Send Reaction Info 4</button>
+<button onclick="sendReact1()">Send React 1</button>
+<button onclick="sendReact2()">Send React 2</button>
+<button onclick="sendReact3()">Send React 3</button>
+<button onclick="sendReact4()">Send React 4</button>
+<input type="text" id="username" placeholder="username">
+<button onclick="sendUsername()">Send Username</button>
+<div id="room-created" style="display:none">
     <p>Share this link:</p>
     <input type="text" id="room-link" readonly>
     <button id="copy-btn">Copy</button>
   </div>
-</div> -->
-<!-- this wouldn't work yet because we're using local pages and not localhost itself smh -->
+</div>
+<!-- this wouldn't work yet because we're using localhost and not a live page smh -->
 <div id="messages"></div>
 
 <script>
@@ -65,12 +89,68 @@
         }
     }
 
-    function sendReact() {
+    function sendReact1() {
         if (socket) {
             const reactTime = Date.now();
-            socket.send("REACT:" + reactTime);
-            log("Sent: REACT:" + reactTime);
+            socket.send("REACT:" + "1" + ":" + reactTime) 
+            log("Sent: REACT:" + "1" + ":" + reactTime);
         }
+    }
+
+    function sendReact2() {
+        if (socket) {
+            const reactTime = Date.now();
+            socket.send("REACT:" + "2" + ":" + reactTime) 
+            log("Sent: REACT:" + "2" + ":" + reactTime);
+        }
+    }
+
+    function sendReact3() {
+        if (socket) {
+            const reactTime = Date.now();
+            socket.send("REACT:" + "3" + ":" + reactTime) 
+            log("Sent: REACT:" + "3" + ":" + reactTime);
+        }
+    }
+
+    function sendReact4() {
+        if (socket) {
+            const reactTime = Date.now();
+            socket.send("REACT:" + "4" + ":" + reactTime) 
+            log("Sent: REACT:" + "4" + ":" + reactTime);
+        }
+    }
+
+    function sendReactionInfo1() {
+        if (socket) {
+            const reactTime = Date.now();
+            socket.send("REACT_NOW:" + "1" + ":" + reactTime);
+            log("Sent: REACT_NOW:" + "1" + ":" + reactTime);
+        }    
+    }
+
+    function sendReactionInfo2() {
+        if (socket) {
+            const reactTime = Date.now();
+            socket.send("REACT_NOW:" + "2" + ":" + reactTime);
+            log("Sent: REACT_NOW:" + "2" + ":" + reactTime);
+        }    
+    }
+
+    function sendReactionInfo3() {
+        if (socket) {
+            const reactTime = Date.now();
+            socket.send("REACT_NOW:" + "3" + ":" + reactTime);
+            log("Sent: REACT_NOW:" + "3" + ":" + reactTime);
+        }    
+    }
+
+    function sendReactionInfo4() {
+        if (socket) {
+            const reactTime = Date.now();
+            socket.send("REACT_NOW:" + "4" + ":" + reactTime);
+            log("Sent: REACT_NOW:" + "4" + ":" + reactTime);
+        }    
     }
 
     function disconnect() {
@@ -84,6 +164,35 @@
         if (socket) {
             socket.send("LEAVE");
             log("Sent: LEAVE");
+        }
+    }
+
+    function sendUsername() {
+        if (socket) {
+            const username = document.getElementById('username').value;
+            socket.send("SET_USERNAME:" + username);
+            log("Sent: SET_USERNAME:" + username);
+        }
+    }
+
+    function rematch() {
+        if (socket) {
+            socket.send("REMATCH");
+            log("Sent: REMATCH");
+        }
+    }
+
+    function readyUp() {
+        if (socket) {
+            socket.send("READY_UP");
+            log("Sent: READY_UP");
+        }
+    }
+
+    function unready() {
+        if (socket) {
+            socket.send("UNREADY");
+            log("Sent: UNREADY");
         }
     }
 
