@@ -1,16 +1,4 @@
-.joinRoomContainer {
-    
-}
 
-.container input {
-    background-color:white;
-    border-color: #868686;
-    color:black;
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-    align-items: center;
-    justify-content: baseline;
-    height: 50px;
+.joinRoomContainer button {
+    margin:15px;
 }
-
