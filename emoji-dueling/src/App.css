@@ -1,11 +1,11 @@
 #root {
-  max-width: 1280px;
+  max-width: 80em;
   margin: 0 auto;
   text-align: center;
 }
 
 .logo {
-  width: 300px;
+  width: 30em;
 }
 
 .card {
@@ -18,14 +18,14 @@ input {
   background-color:white;
   border-color: #949494;
   border-style:solid;
-  border-width:3px;
+  border-width:0.1875em;
   color:black;
   display: flex;
   flex-direction: column;
   margin: auto;
   align-items: center;
   justify-content: baseline;
-  height: 20px;
+  height: 1.25em;
 }
 
 button {
@@ -34,8 +34,9 @@ button {
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
   align-items: center;
   color:white;
-  border-width:3px;
+  border-width:0.1875em;
   border-style:solid;
+  margin:0.25em;
 }
 
 .container {
@@ -45,7 +46,7 @@ button {
   align-items: center;
   justify-content: space-between;
   height: 90vh;
-  max-height: 900px;
+  max-height: 56.25em;
 }
 
 .button-blue {
@@ -61,4 +62,62 @@ button {
 .button-ready {
   background-color:#4add00;
   border-color:#246a00;
+  width: 6.85em;
+  font-size:3em;
+  border-width:0.0625em;
+  border-radius:0.25em;
+  
+}
+
+.lobby-container {
+  width: 22em;
+  min-height: 5em;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  align-items: center;
+  color:white;
+  border-width:0.1875em;
+  border-style:solid;
+  border-radius:0.9375em;
+  padding:1px 0;
+  margin:1em;
+}
+
+.lc-parent {
+  margin: 1rem;
+  text-align: left;
+}
+
+.lc-child-l {
+  vertical-align:baseline;
+  display: inline-block;
+}
+
+.lc-child-r {
+  vertical-align:baseline;
+  display:inline;
+  float:right;
+  text-align:right;
+}
+
+.lobby-container p {
+  text-align:left;
+  margin-left:1em;
+}
+
+.lc-purple {
+  background-color:#4f00dc;
+  border-color:#3c00a5;
+}
+
+.lc-orange {
+  background-color:#ff2900;
+  border-color:#a51b00;
+}
+
+.lobbyButtons {
+  display:flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items:center;
+  margin:1em;
 }
