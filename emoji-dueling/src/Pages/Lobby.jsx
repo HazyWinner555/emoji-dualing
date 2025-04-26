@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom"
 import logo from "../assets/Emoji Dueling Logo.png"
 import { useEffect, useState } from "react"
 import "../css/Home.css"
@@ -10,8 +9,6 @@ import JoinRoom from "../components/JoinRoom"
 import UserStatus from "../components/UserStatus"
 import NicknameInput from "../components/NicknameInput"
 import RoomCode from "../components/RoomCode"
-import { useState } from "react"
-import { useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
 function Lobby() {
@@ -45,7 +42,7 @@ function Lobby() {
         }
     }, ([]))
 
-    var readyButtonClassName = userIsReady ? "readyButtonReady" : "readyButtonUnready"
+    var readyButtonClassName = userIsReady ? "readyButtonUnready" : "readyButtonReady"
     function handleReady(e) {
         e.preventDefault()
         setUserReady(!(userIsReady))
@@ -67,13 +64,15 @@ function Lobby() {
                 </div>
                 <div className="lobbyInputs">
                 <NicknameInput />
+                
                 <RoomCode roomCode={roomCode} />
+                
                 </div>
                 <div className="lobbyButtons">
                 <button className={"readyButton " + readyButtonClassName} onClick={(e) => { handleReady(e) }}>
-                    {userIsReady ? "READY" : "UNREADY"}
+                    {userIsReady ? "UNREADY" : "READY"}
                 </button>
-                <button onClick={() => { navigate("/") }}>Return to Lobby</button>
+                <button className="button-purple" onClick={() => { navigate("/") }}>Return to Lobby</button>
                 </div>
             </div>
         </>

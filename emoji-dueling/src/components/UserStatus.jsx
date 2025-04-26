@@ -13,7 +13,7 @@ function UserStatus(props) {
     }
     return (
         <>
-            <div className={`userStatusContainer ${containerClass}`}>
+            <div className={`userStatusContainer  ${containerClass}`}>
                 <div className="scoreContainer">
                     <p className="usernamePara">
                         {props.username ? props.username : "👻 Waiting for opponent"}

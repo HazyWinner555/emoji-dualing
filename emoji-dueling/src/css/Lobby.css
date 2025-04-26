@@ -19,12 +19,23 @@ p {
     border-radius: 10px;
     height: 80px;
     width: 300px;
+
+    width: 22em;
+  min-height: 5em;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  align-items: center;
+  color:white;
+  border-width:0.1875em;
+  border-style:solid;
+  border-radius:0.9375em;
+  margin:1em;
 }
 
 .scoreContainer {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    text-align:left;
 }
 
 .readyContainer {
@@ -33,11 +44,13 @@ p {
 }
 
 .hostContainer {
-    background-color: red;
+    background-color:#ff2900;
+    border-color:#a51b00;
 }
 
 .guestContainer {
-    background-color: rgb(132, 0, 255);
+    background-color:#4f00dc;
+    border-color:#3c00a5;
 }
 
 .nullContainer {
@@ -61,18 +74,33 @@ p {
     align-items: center;
     justify-content: center;
     width: 330px;
+    background-color:white;
+    border-color: #949494;
+    border-style:solid;
+    border-width:0.1875em;
+    color:black;
 }
 
 .copyButton {
-    min-width: 50px;
-    max-width: 35px;
+    min-width: 0.0625em;
+    max-width: 2em;
     text-align: center;
-    padding: 10px 0px;
+    padding: 0 2em;
+    background-color:white;
+    justify-content:center;
+    border-width: 0;
 }
 
 .roomCodeInput {
-    width: 65%;
-    color: gray
+    width: 85%;
+    color: gray;
+    margin: 0px;
+    border-style:none;
+    text-shadow:none;
+}
+
+.roomCodeInput p {
+    text-align:left;
 }
 
 .roomCodeInput:focus {
@@ -91,15 +119,33 @@ p {
 
 
 .readyButtonReady {
-    background-color: greenyellow;
-    border: green 10px solid;
-    border-radius: 10px;
-    color: black;
+    background-color:#4add00;
+    border-color:#246a00;
+    width: 6.85em;
+    font-size:3em;
+    border-width:0.0625em;
+    border-radius:0.25em;
+    padding: 0em 0em;
 }
 
 
 .readyButtonUnready {
     background-color: darkred;
-    border: red 10px solid;
-    border-radius: 10px;
+    border-color:red;
+    width: 6.85em;
+    font-size:3em;
+    border-width:0.0625em;
+    border-radius:0.25em;
+    padding: 0em 0em;
+}
+
+.roomCodeContainer {
+    width: 23em;
+    padding: 0.em 0.75em;
+    background-color:#bbbbbb;
+    border-color: #949494;
+    border-style:solid;
+    border-width:0.1875em;
+    color:black;
+    height:1em;
 }
