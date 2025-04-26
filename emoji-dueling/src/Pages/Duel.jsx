@@ -7,40 +7,40 @@ function Duel(props) {
     // props.userusername
     // props.opponentusername
     // 
-    const isTesting = true
-    const isTestingOpponentReaction = true
-    const { userIsHost } = useParams()
-    const { roomCode } = useParams();
-    const [userUsername, setUserUsername] = useState(null)
-    const [userLives, setUserLives] = useState(3)
-    const [opponentUsername, setOpponentUsername] = useState(null)
-    const opponentIsHost = !userIsHost
-    const [opponentLives, setOpponentLives] = useState(3)
-    const navigate = useNavigate()
+    // const isTesting = true
+    // const isTestingOpponentReaction = true
+    // const { userIsHost } = useParams()
+    // const { roomCode } = useParams();
+    // const [userUsername, setUserUsername] = useState(null)
+    // const [userLives, setUserLives] = useState(3)
+    // const [opponentUsername, setOpponentUsername] = useState(null)
+    // const opponentIsHost = !userIsHost
+    // const [opponentLives, setOpponentLives] = useState(3)
+    // const navigate = useNavigate()
 
-    if (isTesting) {
-        setOpponentUsername("👑 Moticon Champion")
-    }
+    // if (isTesting) {
+    //     setOpponentUsername("👑 Moticon Champion")
+    // }
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (isTesting) {
-            setUserUsername("😈 Moji Master")
-            setUserHost(true)
-            setUserReady(false)
-        }
-        if (!(isTestingNullUser) && isTesting) {
-            setOpponentUsername("👑 Moticon Champion")
-            setOpponentHost(false)
-            setOpponentLives([0, 5])
-            setOpponentReady(true)
-        } else if (isTestingNullUser && isTesting) {
-            setOpponentUsername(null)
-            setOpponentHost(null)
-            setOpponentLives([0, 0])
-            setOpponentReady(null)
-        }
-    }, ([]))
+    //     if (isTesting) {
+    //         setUserUsername("😈 Moji Master")
+    //         setUserHost(true)
+    //         setUserReady(false)
+    //     }
+    //     if (!(isTestingNullUser) && isTesting) {
+    //         setOpponentUsername("👑 Moticon Champion")
+    //         setOpponentHost(false)
+    //         setOpponentLives([0, 5])
+    //         setOpponentReady(true)
+    //     } else if (isTestingNullUser && isTesting) {
+    //         setOpponentUsername(null)
+    //         setOpponentHost(null)
+    //         setOpponentLives([0, 0])
+    //         setOpponentReady(null)
+    //     }
+    // }, ([]))
     return (
         <>
             <UserStatus />

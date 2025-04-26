@@ -18,7 +18,7 @@ function Lobby() {
     const { roomCode, userIsHost: userIsHostParam } = useParams()
     const userIsHost = userIsHostParam === "host"
     const opponentIsHost = !userIsHost
-
+    const navigate = useNavigate();
     useEffect(() => {
 
         if (isTesting) {

@@ -9,7 +9,6 @@ import Start from './Pages/Start';
 
 function App() {
 
-  const roomLink = "roomOne"
   return (
     <>
       <BrowserRouter>
