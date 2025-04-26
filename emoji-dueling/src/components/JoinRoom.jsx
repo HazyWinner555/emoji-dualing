@@ -12,7 +12,14 @@ function JoinRoom() {
             <div className="joinRoomContainer">
                 Room Code
                 <input type="text" placeholder="Room Code" value={roomCode} onChange={handleRoomCodeInputChange} />
-                <button onClick={() => { navigate(`/${roomCode}/guest/lobby`) }}>Join Room</button>
+                <button onClick={() => {
+                    if (roomCode) {
+                        navigate(`/${roomCode}/guest/lobby`)
+                    }
+                    else {
+                        alert("You must type in a room code before clicking join room.")
+                    }
+                }}>Join Room</button>
             </div>
         </>
     )

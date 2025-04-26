@@ -37,7 +37,7 @@ function Lobby() {
         }
     }, ([]))
 
-    var readyButtonClassName = userIsReady ? "readyButtonReady" : "readyButtonUnready"
+    var readyButtonClassName = userIsReady ? "readyButtonUnready" : "readyButtonReady"
     function handleReady(e) {
         e.preventDefault()
         setUserReady(!(userIsReady))
@@ -52,12 +52,12 @@ function Lobby() {
     return (
         <>
             <div className="lobbyContainer">
-                <UserStatus username={userUsername} isReady={userIsReady} isHost={userIsHost} score={userScore} />
-                <UserStatus username={opponentUsername} isReady={opponentIsReady} isHost={opponentIsHost} score={opponentScore} />
+                <UserStatus username={userUsername} isReady={userIsReady} isHost={userIsHost} score={userScore} view="lobby" />
+                <UserStatus username={opponentUsername} isReady={opponentIsReady} isHost={opponentIsHost} score={opponentScore} view="lobby" />
                 <NicknameInput />
                 <RoomCode roomCode={roomCode} />
                 <button className={"readyButton " + readyButtonClassName} onClick={(e) => { handleReady(e) }}>
-                    {userIsReady ? "READY" : "UNREADY"}
+                    {userIsReady ? "UNREADY" : "READY"}
                 </button>
                 <button onClick={() => { navigate("/") }}>Return to Lobby</button>
             </div>
