@@ -44,7 +44,7 @@ button {
   flex-direction: column;
   margin: auto;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
   height: 90vh;
   max-height: 56.25em;
 }
