@@ -15,10 +15,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path={`/lobby`} element={<Lobby />} />
-          <Route path={`/lobby/start`} element={<Start />} />
-          <Route path={`/lobby/duel`} element={<Duel />} />
-          <Route path={`/lobby/gameover`} element={<Gameover />} />
+          <Route path={`/:roomCode/:userIsHost/lobby`} element={<Lobby />} />
+          <Route path={`/:roomCode/:userIsHost/start`} element={<Start />} />
+          <Route path={`/:roomCode/:userIsHost/duel`} element={<Duel />} />
+          <Route path={`/:roomCode/:userIsHost/gameover`} element={<Gameover />} />
         </Routes>
       </BrowserRouter>
     </>

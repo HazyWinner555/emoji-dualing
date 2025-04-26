@@ -1,14 +1,18 @@
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 function JoinRoom() {
     const navigate = useNavigate()
+    const [roomCode, setRoomCode] = useState("")
+    const handleRoomCodeInputChange = (e) => {
+        setRoomCode(e.target.value)
+    }
     return (
         <>
             <div className="joinRoomContainer">
                 Room Code
-                <input type="text" placeholder="Room Code" />
-                <button onClick={() => { navigate(`/lobby`) }}>Join Room</button>
-                {/* Routes need to be updated to take dynamic room codes. */}
+                <input type="text" placeholder="Room Code" value={roomCode} onChange={handleRoomCodeInputChange} />
+                <button onClick={() => { navigate(`/${roomCode}/guest/lobby`) }}>Join Room</button>
             </div>
         </>
     )

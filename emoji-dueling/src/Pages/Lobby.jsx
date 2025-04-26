@@ -3,35 +3,35 @@ import NicknameInput from "../components/NicknameInput"
 import RoomCode from "../components/RoomCode"
 import { useState } from "react"
 import { useEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 
 
 function Lobby() {
     const isTesting = true
-    const isTestingNullUser = true
+    const isTestingNullUser = false
     const [userUsername, setUserUsername] = useState(null)
-    const [userIsHost, setUserHost] = useState(true)
     const [userScore, setUserScore] = useState([0, 0])
     const [userIsReady, setUserReady] = useState(false)
     const [opponentUsername, setOpponentUsername] = useState(null)
-    const [opponentIsHost, setOpponentHost] = useState(false)
     const [opponentScore, setOpponentScore] = useState([0, 0])
     const [opponentIsReady, setOpponentReady] = useState(false)
+    const { roomCode, userIsHost: userIsHostParam } = useParams()
+    const userIsHost = userIsHostParam === "host"
+    const opponentIsHost = !userIsHost
+
     useEffect(() => {
 
         if (isTesting) {
             setUserUsername("😈 Moji Master")
-            setUserHost(true)
             setUserScore([5, 0])
             setUserReady(false)
         }
         if (!(isTestingNullUser) && isTesting) {
             setOpponentUsername("👑 Moticon Champion")
-            setOpponentHost(false)
             setOpponentScore([0, 5])
             setOpponentReady(true)
         } else if (isTestingNullUser && isTesting) {
             setOpponentUsername(null)
-            setOpponentHost(null)
             setOpponentScore([0, 0])
             setOpponentReady(null)
         }
@@ -42,17 +42,24 @@ function Lobby() {
         e.preventDefault()
         setUserReady(!(userIsReady))
     }
+
+    useEffect(() => {
+        if (userIsReady && opponentIsReady) {
+            navigate(`/${roomCode}/${userIsHost}/start`)
+        }
+    }, [userIsReady, opponentIsReady])
+
     return (
         <>
             <div className="lobbyContainer">
                 <UserStatus username={userUsername} isReady={userIsReady} isHost={userIsHost} score={userScore} />
                 <UserStatus username={opponentUsername} isReady={opponentIsReady} isHost={opponentIsHost} score={opponentScore} />
                 <NicknameInput />
-                <RoomCode roomCode="HARD-CODE" />
-                {/* Needs to be changed */}
+                <RoomCode roomCode={roomCode} />
                 <button className={"readyButton " + readyButtonClassName} onClick={(e) => { handleReady(e) }}>
                     {userIsReady ? "READY" : "UNREADY"}
                 </button>
+                <button onClick={() => { navigate("/") }}>Return to Lobby</button>
             </div>
         </>
     )
