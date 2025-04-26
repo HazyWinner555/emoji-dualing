@@ -52,7 +52,7 @@ function Duel(props) {
 
     function submitOpponentTap(emoji) {
         if (isTesting) {
-            setOpponentTap(1)
+            setOpponentTap(1);
         }
     }
     function handlePlayerTap(emoji) {
