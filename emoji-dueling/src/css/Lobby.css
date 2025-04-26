@@ -1,0 +1,105 @@
+.lobbyContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 90vh;
+}
+
+p {
+    margin: 0;
+}
+
+.userStatusContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 15px;
+    border-radius: 10px;
+    height: 80px;
+    width: 300px;
+}
+
+.scoreContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.readyContainer {
+    display: block;
+
+}
+
+.hostContainer {
+    background-color: red;
+}
+
+.guestContainer {
+    background-color: rgb(132, 0, 255);
+}
+
+.nullContainer {
+    background-color: rgb(133, 132, 132, 80);
+}
+
+.winsLossesPara {
+    display: block;
+}
+
+.usernamePara {
+    display: block;
+    font-size: large;
+    font-weight: bold;
+
+}
+
+.roomCodeInputContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 330px;
+}
+
+.copyButton {
+    min-width: 50px;
+    max-width: 35px;
+    text-align: center;
+    padding: 10px 0px;
+}
+
+.roomCodeInput {
+    width: 65%;
+    color: gray
+}
+
+.roomCodeInput:focus {
+    outline: gray;
+    background-color: rgb(71, 71, 71);
+}
+
+
+.readyButton {
+    height: 100px;
+    font-weight: bold;
+    font-size: 30px;
+
+}
+
+
+
+.readyButtonReady {
+    background-color: greenyellow;
+    border: green 10px solid;
+    border-radius: 10px;
+    color: black;
+}
+
+
+.readyButtonUnready {
+    background-color: darkred;
+    border: red 10px solid;
+    border-radius: 10px;
+}
