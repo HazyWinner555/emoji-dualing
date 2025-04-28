@@ -16,6 +16,7 @@ public class Room {
     private Player player2;
     private long startTime; // timestamp when the reaction signal will be sent
     private int answer; // correct answer
+    private boolean reactionLocked = false; 
 
     public Room(Player p1) {
         Random rand = new Random();
@@ -124,26 +125,22 @@ public class Room {
     }
     */ // deprecated
 
-    public void sendReactionInfo(long timestamp, int answer, Map<String, Room> rooms) {
+    public void sendReactionInfo(int answer, Map<String, Room> rooms) {
         if (gameOver || player1 == null || player2 == null) {
             System.out.println("Cannot get reaction info - game state invalid");
             return;
         }
-    
-        // verify player is in room
-        if (!containsPlayer(player1.getId()) || !containsPlayer(player2.getId())) {
-            System.out.println("Player not in room");
-            return;
-        }
-    
-        if (timestamp < startTime) {
-            System.out.println("Invalid reaction - too early");
-            return;
-        }
-          
-        // save reaction info
-        this.startTime = timestamp;
+
+        // unlock reactions and set new start time
+        unlockReactions();
+        this.startTime = System.currentTimeMillis();
         this.answer = answer;
+
+        // notify players with server timestamp
+        String reactNowMessage = String.format("REACT_NOW:%d:%d", this.answer, this.startTime);
+        sendMessageToPlayer(player1, reactNowMessage);
+        sendMessageToPlayer(player2, reactNowMessage);
+        
         rooms.put(roomID, this);
     }
 
@@ -153,12 +150,20 @@ public class Room {
             return;
         }
 
+        reactionLocked = true; // lock reaction after first reaction (should stop spamming)
+
         // validate reaction timing
-        long reactionLatency = reactionTime - startTime;
+        long serverTime = System.currentTimeMillis();
+        long reactionLatency = serverTime - startTime;
         if (reactionLatency < 0) {
             System.out.println("Invalid reaction - too early");
             return;
         }
+
+        String latencyMessage = String.format("LATENCY:%s:%d", 
+        reactingPlayer.getUsername(), reactionLatency);
+        sendMessageToPlayer(player1, latencyMessage);
+        sendMessageToPlayer(player2, latencyMessage);
 
         // determine if answer is correct (after speed check)
         boolean isCorrect = (playerAnswer == this.answer);
@@ -257,6 +262,11 @@ public class Room {
         gameOver = false;   
         player1Ready = false;
         player2Ready = false;
+        unlockReactions();
+    }
+
+    public void unlockReactions() {
+        this.reactionLocked = false;
     }
 
 
@@ -266,11 +276,20 @@ public class Room {
             reactionTimer.cancel();
             reactionTimer = null;
         }
+
+        // determine winner based on remaining lives and add win (because how did i forget to do this)
+        if (player1.getLives() > player2.getLives()) {
+            player1.addWin();
+            player2.addLoss();
+        } else if (player2.getLives() > player1.getLives()) {
+            player2.addWin();
+            player1.addLoss();
+        }
         
         // send final results
         String results = String.format("FINAL_RESULTS:%s:%d:%s:%d",
-                player1.getId(), player1.getWins().size(),
-                player2.getId(), player2.getWins().size());
+                player1.getUsername(), player1.getWins().size(),
+                player2.getUsername(), player2.getWins().size());
         
         if (player1 != null) {
             sendMessageToPlayer(player1, results);

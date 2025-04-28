@@ -123,33 +123,29 @@
 
     function sendReactionInfo1() {
         if (socket) {
-            const reactTime = Date.now();
-            socket.send("REACT_NOW:" + "1" + ":" + reactTime);
-            log("Sent: REACT_NOW:" + "1" + ":" + reactTime);
+            socket.send("REACT_NOW:1");
+            log("Sent: REACT_NOW:1");
         }    
     }
 
     function sendReactionInfo2() {
         if (socket) {
-            const reactTime = Date.now();
-            socket.send("REACT_NOW:" + "2" + ":" + reactTime);
-            log("Sent: REACT_NOW:" + "2" + ":" + reactTime);
+            socket.send("REACT_NOW:2");
+            log("Sent: REACT_NOW:2");
         }    
     }
 
     function sendReactionInfo3() {
         if (socket) {
-            const reactTime = Date.now();
-            socket.send("REACT_NOW:" + "3" + ":" + reactTime);
-            log("Sent: REACT_NOW:" + "3" + ":" + reactTime);
+            socket.send("REACT_NOW:3");
+            log("Sent: REACT_NOW:3");
         }    
     }
 
     function sendReactionInfo4() {
         if (socket) {
-            const reactTime = Date.now();
-            socket.send("REACT_NOW:" + "4" + ":" + reactTime);
-            log("Sent: REACT_NOW:" + "4" + ":" + reactTime);
+            socket.send("REACT_NOW:4");
+            log("Sent: REACT_NOW:4");
         }    
     }
 

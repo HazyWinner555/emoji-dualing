@@ -156,12 +156,11 @@ public class test_handler extends TextWebSocketHandler {
             case "REACT_NOW":
                 parts = payload.split(":");
                 int reactNowAnswer = Integer.parseInt(parts[1]);
-                long reactNowTimestamp = Long.parseLong(parts[2]);
                 rooms.values().stream()
                         .filter(r -> r.containsPlayer(playerId))
                         .findFirst()
                         .ifPresent(r -> {
-                            r.sendReactionInfo(reactNowTimestamp, reactNowAnswer, rooms); // adding later
+                            r.sendReactionInfo(reactNowAnswer, rooms); // adding later
                         });
                 break;
 
