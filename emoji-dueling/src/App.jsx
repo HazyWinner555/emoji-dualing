@@ -9,18 +9,16 @@ import Start from './Pages/Start';
 
 function App() {
 
-  const roomLink = "roomOne"
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path={`/${roomLink}`} element={<Lobby />} />
-          <Route path={`/${roomLink}/start`} element={<Start />} />
-          <Route path={`/${roomLink}/duel`} element={<Duel />} />
-          <Route path={`/${roomLink}/gameover`} element={<Gameover />} />
+          <Route path={`/:roomCode/:userIsHost/lobby`} element={<Lobby />} />
+          <Route path={`/:roomCode/:userIsHost/start`} element={<Start />} />
+          <Route path={`/:roomCode/:userIsHost/duel`} element={<Duel />} />
+          <Route path={`/:roomCode/:userIsHost/gameover`} element={<Gameover />} />
         </Routes>
-
       </BrowserRouter>
     </>
   )
