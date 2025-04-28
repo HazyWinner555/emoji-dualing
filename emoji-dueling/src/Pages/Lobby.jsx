@@ -45,7 +45,7 @@ function Lobby() {
 
     useEffect(() => {
         if (userIsReady && opponentIsReady) {
-            navigate(`/${roomCode}/${userIsHost}/start`)
+            navigate(`/${roomCode}/${userIsHostParam}/start`)
         }
     }, [userIsReady, opponentIsReady])
 

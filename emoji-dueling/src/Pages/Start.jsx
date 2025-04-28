@@ -9,7 +9,7 @@ function Start() {
     return (
         <>
             Start page text
-            <button onClick={() => { navigate(`/${roomCode}/${userIsHost}/duel`) }}>Duel page</button>
+            <button onClick={() => { navigate(`/${roomCode}/${userIsHostParam}/duel`) }}>Duel page</button>
 
         </>
     )

@@ -3,30 +3,55 @@ import UserStatus from "../components/UserStatus"
 import { useNavigate, useParams } from "react-router-dom"
 import EmojiInput from "../components/EmojiInput"
 import "../css/Duel.css"
+/*
+    TO DO:
 
+    Randomize emoji list
+    Send reaction times to the next page to determine the winner.
+    ... use Context, probably. 
+*/
 function Duel(props) {
-    // props.userusername
-    // props.opponentusername
-    // 
-    const isTesting = true
-    const isTestingOpponentReaction = true
+    const isTesting = true // to test opponent responses
+
+    // Room code will eventually connect to the Server.
+    // UserIsHost & OpponentIsHost are for styling the boxes
     const { roomCode, userIsHost: userIsHostParam } = useParams()
     const userIsHost = userIsHostParam === "host"
     const opponentIsHost = !userIsHost
+
+    // username and lives is for display in the boxes, and for tracking when the game ends.
     const [userUsername, setUserUsername] = useState(null)
     const [userLives, setUserLives] = useState(3)
     const [opponentUsername, setOpponentUsername] = useState(null)
     const [opponentLives, setOpponentLives] = useState(3)
-    const navigate = useNavigate()
+
+    // questionEmoji and emojiList are so that we can dynamically display different emojis to be matched.
+    // isRevealed will allow users to see the emojis and tap them. (Won't accept tap unless revealed)
     const [questionEmoji, setQuestionEmoji] = useState()
     const [emojiList, setEmojiList] = useState([])
-    const [playerTapEmoji, setPlayerTapEmoji] = useState()
-    const [playerTapCorrectness, setPlayerTapCorrectness] = useState(0)
-    const [opponentTap, setOpponentTap] = useState(0)
     const [isRevealed, setIsRevealed] = useState(false)
 
-    useEffect(() => {
+    // playerTapEmoji, playerTapStatus, and opponentTapStatus are all for validating taps & locking out once either responds.
+    const [playerTapEmoji, setPlayerTapEmoji] = useState()
+    const [playerTapStatus, setPlayerTapStatus] = useState(0)
+    const [opponentTapStatus, setOpponentTapStatus] = useState(0)
 
+    // gameover ensures that no further taps are made once the game ends
+    const [gameover, setGameover] = useState(false)
+
+    // roundText is for feedback so you know what's happening, roundStart is for measuring reaction time,
+    // and reactionTimes are used to determine when the tap came in and also score at the end of the match
+    const [roundText, setRoundText] = useState("")
+    const [roundStart, setRoundStart] = useState(Date.now());
+    const [reactionTimes, setReactionTimes] = useState([])
+
+    // This is so that we can use useNavigate
+    const navigate = useNavigate()
+
+
+
+    // Establish dummy variables for the user, opponent, and the emojis we're using.
+    useEffect(() => {
         if (isTesting) {
             setUserUsername("😈 Moji Master")
             setOpponentUsername("👑 Moticon Champion")
@@ -34,13 +59,71 @@ function Duel(props) {
             setQuestionEmoji("😈")
         }
     }, ([]))
+
+    // This handles game over, the end of a round, and moves you to the gameover page
+    function handleLifeChange(userLives, opponentLives) {
+        if (userLives <= 0 || opponentLives <= 0) {
+            setGameover(true)
+            if (userLives > opponentLives) {
+                setRoundText(`Game Over!\n You won!`)
+            }
+            else {
+                setRoundText(`Game Over!\n You lost!`)
+            }
+            console.log(reactionTimes)
+            // FIGURE OUT A BETTER WAY TO PASS THE REACTION TIMES FORWARD
+
+            const moveToGameoverPage = setTimeout(() => {
+
+                navigate(`/${roomCode}/${userIsHostParam}/gameover`, { state: { reactionTimes } })
+            }, 3000);
+
+            return () => clearTimeout(moveToGameoverPage)
+        }
+        else {
+            const resetRoundVariables = setTimeout(() => {
+                setIsRevealed(false)
+                setPlayerTapStatus(0)
+                setOpponentTapStatus(0)
+                setRoundText("Go!")
+                setRoundStart(Date.now());
+                setIsRevealed(true)
+                // Pick new emoji                               // UNFINISHED
+            }, 3000);
+            return () => clearTimeout(resetRoundVariables);
+            // send also who was the ender
+
+        }
+    }
+
+    useEffect(() => {
+        handleLifeChange(userLives, opponentLives)
+    }, ([userLives, opponentLives]))
+
+
+    function endRound(ender, isCorrect) {
+        const roundEnd = Date.now();
+        const timeElapsed = roundEnd - roundStart
+        setReactionTimes(prev => [...prev, [ender, timeElapsed, isCorrect]]);
+        return (timeElapsed)
+    }
+
     function submitPlayerTap(emoji) {
         if (isTesting) {
             // LOCAL FAKE SERVER
-            if (emoji === questionEmoji) {
-                setPlayerTapCorrectness(2);
-            } else {
-                setPlayerTapCorrectness(1);
+            if (!(playerTapStatus > 0) && !(opponentTapStatus > 0) && !gameover && userLives > 0 && opponentLives > 0) { // if the game is stll valid
+                if (roundStart) {
+                    const timeElapsed = endRound("player", emoji === questionEmoji)
+                    if (emoji === questionEmoji) { // if the user is right
+                        setPlayerTapStatus(2); // correct player tap
+                        setOpponentLives(opponentLives - 1);
+                        setRoundText("Nice one! " + timeElapsed)
+                    } else {
+                        setPlayerTapStatus(1); // incorrect player tap
+                        setUserLives(userLives - 1);
+                        setRoundText("Not quite... " + timeElapsed)
+                    }
+                }
             }
         } else {
             // REAL SERVER CALL GOES HERE
@@ -50,56 +133,75 @@ function Duel(props) {
 
     }
 
-    function submitOpponentTap(emoji) {
+    function submitOpponentTapStatus(emoji) {
         if (isTesting) {
-            setOpponentTap(1);
+            if (!(playerTapStatus > 0) && !(opponentTapStatus > 0) && !gameover && userLives > 0 && opponentLives > 0) {
+                // if nobody's tapped yet, and the game isn't over
+                setOpponentTapStatus(1) // opponent tap received
+                if (roundStart) {
+                    const timeElapsed = endRound("opponent", emoji === questionEmoji)
+                    if (emoji === questionEmoji) { // correct opponent tap
+                        setUserLives(userLives - 1);
+                        setRoundText("Too slow! " + timeElapsed)
+                    } else {
+                        setOpponentLives(opponentLives - 1);
+                        setRoundText("Free Win! " + timeElapsed)
+                    }
+                }
+
+            }
         }
     }
+
     function handlePlayerTap(emoji) {
         setPlayerTapEmoji(emoji);
-        setPlayerTapCorrectness(-1); // Waiting for server
+        setPlayerTapStatus(-1); // Waiting for server
         submitPlayerTap(emoji);
     }
 
     return (
         <>
+            {/* player userStatus */}
             <UserStatus username={userUsername} lives={userLives} isHost={userIsHost} view="duel" />
 
             <div>
-                {/* Ready? / Set / Go! / You got it! (time) / You didn’t get it! (time) / They got it (time) / They didn’t get it (time) */}
+                {/* question emoji and answer emojis */}
                 <div className="emoji-input-container">
-                    <EmojiInput emoji={questionEmoji} isQuestion={true} isRevealed={isRevealed} />
+                    {roundText}
+                    <EmojiInput emoji={questionEmoji} isQuestion={true} isRevealed={isRevealed}
+                        questionEmoji={questionEmoji}
+                        playerTapEmoji={playerTapEmoji}
+                        opponentTapStatus={opponentTapStatus}
+                        playerTapStatus={playerTapStatus}
+                        onPlayerTap={handlePlayerTap} />
                     {emojiList.map((index, key) => {
                         return (<EmojiInput key={key}
                             emoji={index} isQuestion={false}
                             questionEmoji={questionEmoji} playerTapEmoji={playerTapEmoji}
-                            opponentTap={opponentTap} playerTapCorrectness={playerTapCorrectness} isRevealed={isRevealed}
+                            opponentTapStatus={opponentTapStatus} playerTapStatus={playerTapStatus} isRevealed={isRevealed}
                             onPlayerTap={handlePlayerTap} // Pass the function!
                         />)
                     })}
                 </div>
-                {isTesting ? <button onClick={() => {
-                    setIsRevealed(!isRevealed)
-                }}>Toggle Revealed</button> : ""}
-
+                {/* for testing mock responses (just change the isTesting variable to enable all testing) */}
                 {isTesting ?
+
                     <div>
                         <button onClick={() => {
                             if (isRevealed) {
-                                submitOpponentTap("😈")
+                                submitOpponentTapStatus("😈")
                             }
                         }} >Test Opponent Reaction😈</button>
                         <button onClick={() => {
                             if (isRevealed) {
-                                submitOpponentTap("👑")
+                                submitOpponentTapStatus("👑")
                             }
                         }} >Test Opponent Reaction👑</button>
                     </div>
                     : ""}
             </div>
-
+            {/* opponent userstatus */}
             <UserStatus username={opponentUsername} lives={opponentLives} isHost={opponentIsHost} view="duel" />
-            {/* After each button press, a call to the server is made. After one player reaches 0 hearts, → https://trello.com/c/P72w7ddP/53-gameover-page */}
         </>
     )
 }

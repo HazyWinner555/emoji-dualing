@@ -40,7 +40,7 @@ function UserStatus(props) {
             heartString += "💖"
         }
         for (let i = props.lives; i < 3; i++) {
-            heartSTring += "🖤"
+            heartString += "🖤"
         }
 
         return (<div className={`userStatusContainer ${containerClass}`}> {/*Flip justify-content between user and opponent.*/}
