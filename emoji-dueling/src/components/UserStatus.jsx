@@ -34,6 +34,23 @@ function UserStatus(props) {
             </>
         )
     }
+    else if (props.view === "start") {
+        <>
+            <div className="UserStatusContainer">
+                <div className="block">
+                    {props.username}
+                </div>
+                <div className="wl">
+                    <div className="block">
+                        {props.wins}
+                    </div>
+                    <div className="block">
+                        {props.losses}
+                    </div>
+                </div>
+            </div>
+        </>
+    }
     else if (props.view === "duel") {
         let heartString = ""
         for (let i = 0; i < props.lives; i++) {

@@ -1,0 +1,16 @@
+.UserStatusContainer {
+    width: 300px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.wl {
+    display: flex;
+    flex-direction: column;
+}
+.x {
+    background-color: red;
+}
+.y {
+    background-color: blue;
+}
