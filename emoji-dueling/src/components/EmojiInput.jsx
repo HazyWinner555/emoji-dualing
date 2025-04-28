@@ -6,11 +6,11 @@ function EmojiInput(props) {
             2. isQuestion (boolean) whether or not it is the question emoji (ie, the one you have to match)
             3. questionEmoji (String) what the question emoji is (ie, the one you have to match) // this is so that we can compare a given answer to the question
             4. playerTapEmoji (String) which emoji the player tapped
-            5. opponentTap (int) whether or not the emoji is correct, and what the server response is.
+            5. opponentTapStatus (int) whether or not the emoji is correct, and what the server response is.
                 -1 awaiting server response
                 0: the opponent has not tapped
                 1: the opponent tapped
-            6. playerTapCorrectness (int)
+            6. playerTapStatus (int)
                 -1: awaiting server response
                 0: the player has not tapped
                 1: the player tapped, and is incorrect
@@ -28,7 +28,7 @@ function EmojiInput(props) {
 
     */
     function onClickHandler() {
-        if (props.playerTapCorrectness === 0 && props.isRevealed) {
+        if (props.playerTapStatus === 0 && props.isRevealed) {
             props.onPlayerTap(props.emoji); // Tell parent: "they tapped this emoji!"
         }
     }
@@ -46,18 +46,18 @@ function EmojiInput(props) {
         var answerEmojiClass
 
 
-        if (props.playerTapCorrectness <= 0) { // then the player has not yet tapped
+        if (props.playerTapStatus <= 0) { // then the player has not yet tapped
             answerEmojiClass = "default"
         }
 
-        if (props.opponentTap > 0 || props.playerTapCorrectness > 0) { // then a tap has happened
+        if (props.opponentTapStatus > 0 || props.playerTapStatus > 0) { // then a tap has happened
             answerEmojiClass = "dark"
         }
 
-        if (props.questionEmoji === props.emoji && (props.opponentTap > 0 || props.playerTapCorrectness > 0)) { // then the player was correct && this was the one that they tapped && this is the correct emoji
+        if (props.questionEmoji === props.emoji && (props.opponentTapStatus > 0 || props.playerTapStatus > 0)) { // then the player was correct && this was the one that they tapped && this is the correct emoji
             answerEmojiClass = "correct"
         }
-        else if (props.playerTapEmoji === props.emoji && props.playerTapCorrectness == 1) { // then the player was incorrect && the player tapped THIS one
+        else if (props.playerTapEmoji === props.emoji && props.playerTapStatus == 1) { // then the player was incorrect && the player tapped THIS one
             answerEmojiClass = "incorrect"
         }
 
