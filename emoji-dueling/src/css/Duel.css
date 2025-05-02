@@ -1,0 +1,15 @@
+.default {
+    background-color: gray;
+}
+
+.dark {
+    background-color: rgb(70, 70, 70);
+}
+
+.incorrect {
+    background-color: red;
+}
+
+.correct {
+    background-color: green;
+}
