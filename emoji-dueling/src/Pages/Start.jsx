@@ -1,3 +1,12 @@
+/*
+    User data should be taken from the server.
+        Relevant user data: username, score (wins/losses), host state
+        See full user object structure in the UserStatus component.    
+    Ensure navigate function works correctly with server.
+       The generic links are as follows:
+        /roomCode/isHost/Page
+*/
+
 import UserStatus from "../components/UserStatus"
 import "../css/Start.css"
 import logo from "../assets/Emoji Dueling Logo.png"
@@ -14,7 +23,7 @@ function Start() {
     const opponentIsHost = !userIsHost
 
     let usernameX, usernameY, xWin, xLoss, yLoss, yWin
-    if (isTestng) {
+    if (isTestng) {                                                 // All of thiss data should be set up by the server.
         usernameX = "abc"
         usernameY = "bcd"
         xWin = 10
@@ -24,7 +33,6 @@ function Start() {
     }
     useEffect(() => {
         const moveToDuelPage = setTimeout(() => {
-            console.log("Function run!")
             navigate(`/${roomCode}/${userIsHostParam}/duel`)
         }, 3000);
 
