@@ -13,3 +13,10 @@
 .correct {
     background-color: green;
 }
+
+.answer-emoji-container {
+    width:4.5em;
+    height:4.5em;
+    font-size:3em;
+    border-width:0.1em;
+}
