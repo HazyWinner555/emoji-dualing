@@ -35,7 +35,7 @@ function UserStatus(props) {
         )
     }
     else if (props.view === "start") {
-        <>
+        return (<>
             <div className="UserStatusContainer">
                 <div className="block">
                     {props.username}
@@ -49,7 +49,7 @@ function UserStatus(props) {
                     </div>
                 </div>
             </div>
-        </>
+        </>)
     }
     else if (props.view === "duel") {
         let heartString = ""
