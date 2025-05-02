@@ -59,8 +59,8 @@ function Lobby() {
         <>
             <div className="container">
                 <div className="lobbyContainers">
-                <UserStatus username={userUsername} isReady={userIsReady} isHost={userIsHost} score={userScore} />
-                <UserStatus username={opponentUsername} isReady={opponentIsReady} isHost={opponentIsHost} score={opponentScore} />
+                <UserStatus username={userUsername} isReady={userIsReady} isHost={userIsHost} score={userScore} view="lobby" />
+                <UserStatus username={opponentUsername} isReady={opponentIsReady} isHost={opponentIsHost} score={opponentScore} view="lobby" />
                 </div>
                 <div className="lobbyInputs">
                 <NicknameInput />
