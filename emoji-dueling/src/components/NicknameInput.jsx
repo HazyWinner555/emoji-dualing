@@ -1,4 +1,6 @@
-
+/*
+    This should update the username sent to the server.
+*/
 
 function NickNameInput() {
 

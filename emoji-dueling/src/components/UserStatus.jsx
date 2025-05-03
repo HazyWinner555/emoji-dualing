@@ -1,5 +1,4 @@
 import "../css/Lobby.css"
-
 function UserStatus(props) {
     var containerClass
     if (props.username == null) {
@@ -34,6 +33,23 @@ function UserStatus(props) {
             </>
         )
     }
+    else if (props.view === "start") {
+        return (<>
+            <div className="UserStatusContainer">
+                <div className="block">
+                    {props.username}
+                </div>
+                <div className="wl">
+                    <div className="block">
+                        {props.wins}
+                    </div>
+                    <div className="block">
+                        {props.losses}
+                    </div>
+                </div>
+            </div>
+        </>)
+    }
     else if (props.view === "duel") {
         let heartString = ""
         for (let i = 0; i < props.lives; i++) {
@@ -66,6 +82,29 @@ function UserStatus(props) {
             )
         }
         
+    }
+    else if (props.view === "gameover") {
+        if (props.winner == true) {
+            containerClass = "winnerContainer"
+        }
+        else {
+            containerClass = "loserContainer"
+        }
+        return (
+            <>
+                <div className={`userStatusContainer ${containerClass}`}>
+                    <div className="scoreContainer">
+                        <p className="usernamePara">
+                            {props.username}
+                        </p>
+                    </div>
+
+                    <div className="victoryContainer">
+                        {props.winner ? "WIN" : "LOSS"}
+                    </div>
+                </div>
+            </>
+        )
     }
 }
 
