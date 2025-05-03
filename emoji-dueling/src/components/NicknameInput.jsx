@@ -10,6 +10,8 @@ function NickNameInput() {
 
                 <p>Nickname 😈</p>
                 <input type="text" placeholder="Moji Master 😈" />
+                {/* use "socket.emit('SET_USERNAME', { username })" */}
+                
             </div>
         </>
     )
