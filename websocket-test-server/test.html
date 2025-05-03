@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+    <style>
+        body {
+            background-color: #222;
+            color: #fff;
+        }
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+<button onclick="connect()">Connect</button>
+<button onclick="sendCreateRoom()">Send CREATE_ROOM</button>
+<button onclick="sendReact()">Send REACT</button>
+<button onclick="disconnect()">Disconnect</button>
+<button onclick="leave()">Leave Queue</button>
+<!-- <button onclick="log('Sent: DEBUG_LIST_ROOMS'); socket.send('DEBUG_LIST_ROOMS');">Debug List Rooms</button> -->
+<!-- <button onclick="log('Sent: PLAYER_LIST'); socket.send('PLAYER_LIST');">Player List</button> -->
+<input type="text" id="gameName" placeholder="Game ID">
+<button onclick="joinGame()">Join Game</button>
+<button onclick="readyUp()">Ready Up</button>
+<button onclick="unready()">Unready</button>
+<button onclick="rematch()">Rematch</button>
+<button onclick="sendReactionInfo1()">Send Reaction Info 1</button>
+<button onclick="sendReactionInfo2()">Send Reaction Info 2</button>
+<button onclick="sendReactionInfo3()">Send Reaction Info 3</button>
+<button onclick="sendReactionInfo4()">Send Reaction Info 4</button>
+<button onclick="sendReact1()">Send React 1</button>
+<button onclick="sendReact2()">Send React 2</button>
+<button onclick="sendReact3()">Send React 3</button>
+<button onclick="sendReact4()">Send React 4</button>
+<input type="text" id="username" placeholder="username">
+<button onclick="sendUsername()">Send Username</button>
+<div id="room-created" style="display:none">
+    <p>Share this link:</p>
+    <input type="text" id="room-link" readonly>
+    <button id="copy-btn">Copy</button>
+  </div>
+</div>
+<!-- this wouldn't work yet because we're using localhost and not a live page smh -->
+<div id="messages"></div>
+
+<script>
+    let socket;
+
+    function connect() {
+        socket = new WebSocket('ws://localhost:8080/game');
+
+        socket.onopen = function(e) {
+            log("Connection established");
+        };
+
+        socket.onmessage = function(event) {
+            log("Received: " + event.data);
+            if (event.data.startsWith("ROOM_CREATED:")) {
+                const roomId = event.data.split(":")[1];
+                const roomLink = `http://localhost:8080?room=${roomId}`;
+                document.getElementById('room-link').value = roomLink;
+                document.getElementById('room-created').style.display = 'block';
+            }
+        };
+
+        socket.onclose = function(event) {
+            log("Connection closed");
+        };
+
+        socket.onerror = function(error) {
+            log("Error: " + error.message);
+        };
+    }
+
+    function sendJoin() {
+        if (socket) {
+            //socket.send("JOIN");
+            log("Sent: JOIN");
+        }
+    }
+
+    function sendCreateRoom() {
+        if (socket) {
+            socket.send("CREATE_ROOM");
+            log("Sent: CREATE_ROOM");
+        }
+    }
+
+    function sendReact1() {
+        if (socket) {
+            const reactTime = Date.now();
+            socket.send("REACT:" + "1" + ":" + reactTime) 
+            log("Sent: REACT:" + "1" + ":" + reactTime);
+        }
+    }
+
+    function sendReact2() {
+        if (socket) {
+            const reactTime = Date.now();
+            socket.send("REACT:" + "2" + ":" + reactTime) 
+            log("Sent: REACT:" + "2" + ":" + reactTime);
+        }
+    }
+
+    function sendReact3() {
+        if (socket) {
+            const reactTime = Date.now();
+            socket.send("REACT:" + "3" + ":" + reactTime) 
+            log("Sent: REACT:" + "3" + ":" + reactTime);
+        }
+    }
+
+    function sendReact4() {
+        if (socket) {
+            const reactTime = Date.now();
+            socket.send("REACT:" + "4" + ":" + reactTime) 
+            log("Sent: REACT:" + "4" + ":" + reactTime);
+        }
+    }
+
+    function sendReactionInfo1() {
+        if (socket) {
+            socket.send("REACT_NOW:1");
+            log("Sent: REACT_NOW:1");
+        }    
+    }
+
+    function sendReactionInfo2() {
+        if (socket) {
+            socket.send("REACT_NOW:2");
+            log("Sent: REACT_NOW:2");
+        }    
+    }
+
+    function sendReactionInfo3() {
+        if (socket) {
+            socket.send("REACT_NOW:3");
+            log("Sent: REACT_NOW:3");
+        }    
+    }
+
+    function sendReactionInfo4() {
+        if (socket) {
+            socket.send("REACT_NOW:4");
+            log("Sent: REACT_NOW:4");
+        }    
+    }
+
+    function disconnect() {
+            if (socket) {
+                socket.close();
+                log("Disconnected manually");
+            }
+        }
+
+    function leave() {
+        if (socket) {
+            socket.send("LEAVE");
+            log("Sent: LEAVE");
+        }
+    }
+
+    function sendUsername() {
+        if (socket) {
+            const username = document.getElementById('username').value;
+            socket.send("SET_USERNAME:" + username);
+            log("Sent: SET_USERNAME:" + username);
+        }
+    }
+
+    function rematch() {
+        if (socket) {
+            socket.send("REMATCH");
+            log("Sent: REMATCH");
+        }
+    }
+
+    function readyUp() {
+        if (socket) {
+            socket.send("READY_UP");
+            log("Sent: READY_UP");
+        }
+    }
+
+    function unready() {
+        if (socket) {
+            socket.send("UNREADY");
+            log("Sent: UNREADY");
+        }
+    }
+
+    function joinGame() {
+        if (socket) {
+            const gameName = document.getElementById('gameName').value;
+            socket.send("JOIN_ROOM:" + gameName);
+            log("Sent: JOIN_ROOM:" + gameName);
+        }
+    }
+
+    function log(message) {
+        const messagesDiv = document.getElementById('messages');
+        messagesDiv.innerHTML += message + '<br>';
+    }
+</script>
+</body>
+</html>
