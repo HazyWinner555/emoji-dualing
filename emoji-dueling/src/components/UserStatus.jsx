@@ -37,19 +37,35 @@ function UserStatus(props) {
     else if (props.view === "duel") {
         let heartString = ""
         for (let i = 0; i < props.lives; i++) {
-            heartString += "💖"
+            if (props.isHost) {
+                heartString += "💜"
+            } else {
+                heartString += "❤️"
+            }
+            
         }
         for (let i = props.lives; i < 3; i++) {
             heartString += "🖤"
         }
 
-        return (<div className={`userStatusContainer ${containerClass}`}> {/*Flip justify-content between user and opponent.*/}
-            <p className="usernamePara">
-                {props.username}
-            </p>
-            {heartString}
-        </div>
-        )
+        if (props.isOpponent) {
+            return (<div className={`userStatusContainer ${containerClass}`}> {/*Flip justify-content between user and opponent.*/}
+                <p className="usernamePara">
+                    {props.username}
+                </p>
+                <p className="hearts"> {heartString} </p>
+            </div>
+            )
+        } else {
+            return (<div className={`userStatusContainer ${containerClass}`}> {/*Flip justify-content between user and opponent.*/}
+                <p className="hearts"> {heartString} </p>
+                <p className="usernamePara">
+                    {props.username}
+                </p>
+            </div>
+            )
+        }
+        
     }
 }
 

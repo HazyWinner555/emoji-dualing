@@ -3,6 +3,7 @@ import UserStatus from "../components/UserStatus"
 import { useNavigate, useParams } from "react-router-dom"
 import EmojiInput from "../components/EmojiInput"
 import "../css/Duel.css"
+
 /*
     TO DO:
 
@@ -12,6 +13,7 @@ import "../css/Duel.css"
 */
 function Duel(props) {
     const isTesting = true // to test opponent responses
+    const testingButtons = false // to show or hide the test buttons
 
     // Room code will eventually connect to the Server.
     // UserIsHost & OpponentIsHost are for styling the boxes
@@ -47,7 +49,9 @@ function Duel(props) {
 
     // This is so that we can use useNavigate
     const navigate = useNavigate()
-
+    
+    // Random number applied to the timer between each round.
+    let delay = 3000;
 
 
     // Establish dummy variables for the user, opponent, and the emojis we're using.
@@ -57,6 +61,7 @@ function Duel(props) {
             setOpponentUsername("👑 Moticon Champion")
             setEmojiList(["😈", "👑", "👻", "📋"])
             setQuestionEmoji("😈")
+            setRoundText("Ready...")
         }
     }, ([]))
 
@@ -81,16 +86,28 @@ function Duel(props) {
             return () => clearTimeout(moveToGameoverPage)
         }
         else {
+            
+
             const resetRoundVariables = setTimeout(() => {
-                setIsRevealed(false)
                 setPlayerTapStatus(0)
                 setOpponentTapStatus(0)
-                setRoundText("Go!")
-                setRoundStart(Date.now());
-                setIsRevealed(true)
+                setRoundText("Ready...")
+                setIsRevealed(false)
                 // Pick new emoji                               // UNFINISHED
-            }, 3000);
+                setTimeout(() =>  {
+                    setRoundText("Go!")
+                    setRoundStart(Date.now());
+                    setIsRevealed(true)
+                }, delay);
+            }, delay);
+            delay = 1000 + Math.floor(Math.random() * 5000);
+
+
             return () => clearTimeout(resetRoundVariables);
+            
+            
+            
+            
             // send also who was the ender
 
         }
@@ -162,18 +179,21 @@ function Duel(props) {
     return (
         <>
             {/* player userStatus */}
-            <UserStatus username={userUsername} lives={userLives} isHost={userIsHost} view="duel" />
+            <UserStatus username={userUsername} lives={userLives} isHost={userIsHost} isOpponent={true} view="duel" />
 
-            <div>
+            <div className="duelPage">
                 {/* question emoji and answer emojis */}
                 <div className="emoji-input-container">
-                    {roundText}
+                    <h1>{roundText}</h1>
+                    <div className="question-container">
                     <EmojiInput emoji={questionEmoji} isQuestion={true} isRevealed={isRevealed}
                         questionEmoji={questionEmoji}
                         playerTapEmoji={playerTapEmoji}
                         opponentTapStatus={opponentTapStatus}
                         playerTapStatus={playerTapStatus}
                         onPlayerTap={handlePlayerTap} />
+                    </div>
+                    <div className="answers-container">
                     {emojiList.map((index, key) => {
                         return (<EmojiInput key={key}
                             emoji={index} isQuestion={false}
@@ -182,9 +202,10 @@ function Duel(props) {
                             onPlayerTap={handlePlayerTap} // Pass the function!
                         />)
                     })}
+                    </div>
                 </div>
                 {/* for testing mock responses (just change the isTesting variable to enable all testing) */}
-                {isTesting ?
+                {testingButtons ?
 
                     <div>
                         <button onClick={() => {
@@ -201,7 +222,7 @@ function Duel(props) {
                     : ""}
             </div>
             {/* opponent userstatus */}
-            <UserStatus username={opponentUsername} lives={opponentLives} isHost={opponentIsHost} view="duel" />
+            <UserStatus username={opponentUsername} lives={opponentLives} isHost={opponentIsHost} isOpponent={false} view="duel" />
         </>
     )
 }
