@@ -30,12 +30,8 @@ function Home() {
                 <img src={logo} className="logo" />
                 <NickNameInput />
                 <JoinRoom />
-<<<<<<< HEAD
                 <button className="button-purple" onClick={() => { navigate(`${Math.random().toString(36).slice(2, 7)}/host/lobby`) }}>Host Room</button>
                 {/* Routes need to eventually be changed to handle dynamic room links. LATER */}
-=======
-                <button onClick={() => { navigate(`${Math.random().toString(36).slice(2, 7)}/host/lobby`) }}>Host Room</button>
->>>>>>> main
             </div>
         </>
     )

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import logo from "../assets/Emoji Dueling Logo.png"
 import { useEffect, useState } from "react"
 import "../css/Home.css"
@@ -7,18 +6,6 @@ import RoomCodeInput from "../components/RoomCodeInput"
 import LobbyContainerPurple from "../components/LobbyContainerPurple.jsx"
 import LobbyContainerOrange from "../components/LobbyContainerOrange.jsx"
 import JoinRoom from "../components/JoinRoom"
-=======
-/*
-    User data should be taken from the server.
-        Relevant user data: username, score (wins/losses), ready state, host state
-        See full user object structure in the UserStatus component.
-    Ensure navigate function works correctly with server.
-       The generic links are as follows:
-        /roomCode/isHost/Page
-
-*/
-
->>>>>>> main
 import UserStatus from "../components/UserStatus"
 import NicknameInput from "../components/NicknameInput"
 import RoomCode from "../components/RoomCode"

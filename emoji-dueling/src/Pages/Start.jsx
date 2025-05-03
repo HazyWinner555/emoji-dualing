@@ -3,7 +3,7 @@
         Relevant user data: username, score (wins/losses), host state
         See full user object structure in the UserStatus component.    
     Ensure navigate function works correctly with server.
-       The generic links are as follows:
+        The generic links are as follows:
         /roomCode/isHost/Page
 */
 
