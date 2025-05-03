@@ -1,10 +1,19 @@
+/*
+    User data should be taken from the server.
+        Relevant user data: username, score (wins/losses), ready state, host state
+        See full user object structure in the UserStatus component.
+    Ensure navigate function works correctly with server.
+       The generic links are as follows:
+        /roomCode/isHost/Page
+
+*/
+
 import UserStatus from "../components/UserStatus"
 import NicknameInput from "../components/NicknameInput"
 import RoomCode from "../components/RoomCode"
 import { useState } from "react"
 import { useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-
 
 function Lobby() {
     const isTesting = true
@@ -21,7 +30,7 @@ function Lobby() {
     const navigate = useNavigate();
     useEffect(() => {
 
-        if (isTesting) {
+        if (isTesting) {                                            // All of this data should be set up by the server.
             setUserUsername("😈 Moji Master")
             setUserScore([5, 0])
             setUserReady(false)
@@ -38,14 +47,14 @@ function Lobby() {
     }, ([]))
 
     var readyButtonClassName = userIsReady ? "readyButtonUnready" : "readyButtonReady"
-    function handleReady(e) {
+    function handleReady(e) {                                       // The server should probably handle readying and unreadying.
         e.preventDefault()
         setUserReady(!(userIsReady))
     }
 
     useEffect(() => {
         if (userIsReady && opponentIsReady) {
-            navigate(`/${roomCode}/${userIsHost}/start`)
+            navigate(`/${roomCode}/${userIsHostParam}/start`)
         }
     }, [userIsReady, opponentIsReady])
 
