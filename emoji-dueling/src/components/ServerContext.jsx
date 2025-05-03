@@ -8,7 +8,7 @@ export const useServer = () => {
     const ctx = useContext(ServerContext);
     if (!ctx) throw new Error("useServer must be used within a ServerProvider");
     return ctx;
-};
+}
 
 // 3. ServerProvider component
 export const ServerProvider = ({ children }) => {

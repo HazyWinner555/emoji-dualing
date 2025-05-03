@@ -1,0 +1,82 @@
+.gameoverContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 90vh;
+}
+
+.userStatusContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 15px;
+    border-radius: 10px;
+    height: 40px;
+    width: 300px;
+}
+
+.winnerContainer {
+    background-color: rgb(255, 176, 0);
+    border: 3px solid rgb(104, 69, 3);
+}
+
+.winnerContainer .userEmoji {
+    position: relative;
+    display: inline-block;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+    padding: 20px 15px;
+    text-align: center;
+    line-height: 0;
+}
+
+.loserContainer {
+    background-color: rgb(123, 123, 123);
+    border: 3px solid rgb(54, 54, 54);
+
+}
+
+.usernamePara {
+    font-weight: unset;
+}
+
+.roundSummaryContainer {}
+
+.roundSummary .correct {
+    color: green;
+    background-color: transparent;
+}
+
+.roundSummary .incorrect {
+    color: red;
+    background-color: transparent;
+
+}
+
+.rematchButton {
+    border: 10px solid;
+    border-radius: 10px;
+}
+
+.rematchButtonReady {
+    background-color: rgb(100, 74, 179);
+    border: rgb(23, 21, 29) 5px solid;
+}
+
+
+button.rematchButtonUnready {
+    background-color: rgb(157, 125, 255);
+    border: rgb(116, 89, 190) 5px solid;
+    border-radius: 10px;
+}
+
+.returnToLobbbyButton {
+    background-color: blue;
+    border: 5px solid rgb(39, 100, 192)
+}
+
+.returnToMainMenuButton {
+    background-color: red;
+    border: 5px solid darkred
+}

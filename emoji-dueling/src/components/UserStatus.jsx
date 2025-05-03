@@ -76,10 +76,10 @@ function UserStatus(props) {
         }
         return (
             <>
-                <div className={`userStatusContainer ${containerClass}`}>
+                <div className={`userStatusContainer ${containerClass} gameover`}>
                     <div className="scoreContainer">
                         <p className="usernamePara">
-                            {props.username}
+                            <span className="userEmoji">{props.username ? (props.username.slice(0, 2)) : ""}</span>{props.username ? props.username.slice(2, props.username.legnth) : ""}
                         </p>
                     </div>
 

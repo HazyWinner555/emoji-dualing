@@ -14,16 +14,13 @@ import "../css/Home.css"
 import NickNameInput from "../components/NicknameInput"
 import JoinRoom from "../components/JoinRoom"
 import { useServer } from '../components/ServerContext';
+import RoomCode from "../components/RoomCode"
 function Home() {
-    const { send, connected, messages, roomState, requestRoomCreation } = useServer();
+    // const { send, connected, messages, roomState, requestRoomCreation } = useServer();
 
-    function joinRoomChangeHandler(e) {
-        setJoinRoomLink(e)
-        console.log(e, joinRoomLink)
-    }
+
     const navigate = useNavigate()
-    const [joinRoomLink, setJoinRoomLink] = useState("")
-    const [hostRoomLink, setHostRoomLink] = useState("")
+    // const [hostRoomLink, setHostRoomLink] = useState("")
     return (
         <>
             <div className="container">
@@ -31,9 +28,16 @@ function Home() {
                 <img src={logo} className="logo" />
                 <NickNameInput />
                 <JoinRoom />
-                <button onClick={() => { requestRoomCreation((roomID) => { navigate(`/${roomID}/host/lobby`) }) }}>
+                <button className="hostRoomButton" onClick={() => {
+                    // requestRoomCreation((roomID) => {                        when server integration works properly, this will be how.
+                    //     console.log("Room created with ID:", roomID);
+                    //     navigate(`/${roomID}/host/lobby`);
+                    // });
+                    navigate(`${Math.random().toString(36).slice(2, 7)}/host/lobby`)
+                }}>
                     Host Room
                 </button>
+
             </div>
         </>
     )

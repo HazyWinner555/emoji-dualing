@@ -68,7 +68,7 @@ function Lobby() {
                 <button className={"readyButton " + readyButtonClassName} onClick={(e) => { handleReady(e) }}>
                     {userIsReady ? "UNREADY" : "READY"}
                 </button>
-                <button onClick={() => { navigate("/") }}>Return to Lobby</button>
+                <button className="exitLobbbyButton" onClick={() => { navigate("/") }}> Exit Lobby</button>
             </div>
         </>
     )
