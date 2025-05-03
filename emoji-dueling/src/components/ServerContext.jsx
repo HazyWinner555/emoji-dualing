@@ -17,7 +17,7 @@ export const ServerProvider = ({ children }) => {
     const socketRef = useRef(null);
 
     useEffect(() => {
-        const socket = new WebSocket("ws://localhost:8080/ws"); // adjust your URL
+        const socket = new WebSocket("ws://localhost:8080/game"); // adjust your URL
         socketRef.current = socket;
 
         socket.onopen = () => {
