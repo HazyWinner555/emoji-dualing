@@ -1,5 +1,4 @@
 import "../css/Lobby.css"
-
 function UserStatus(props) {
     var containerClass
     if (props.username == null) {
