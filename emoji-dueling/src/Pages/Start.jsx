@@ -23,6 +23,7 @@ function Start() {
     const opponentIsHost = !userIsHost
 
     let usernameX, usernameY, xWin, xLoss, yLoss, yWin
+    
     if (isTestng) {                                                 // All of thiss data should be set up by the server.
         usernameX = "abc"
         usernameY = "bcd"
@@ -35,7 +36,6 @@ function Start() {
         const moveToDuelPage = setTimeout(() => {
             navigate(`/${roomCode}/${userIsHostParam}/duel`)
         }, 3000);
-
         return () => clearTimeout(moveToDuelPage);
     }, []);
 
