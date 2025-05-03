@@ -13,8 +13,9 @@ import { useEffect, useState } from "react"
 import "../css/Home.css"
 import NickNameInput from "../components/NicknameInput"
 import JoinRoom from "../components/JoinRoom"
-
+import { useServer } from '../components/ServerContext';
 function Home() {
+    const { send, connected, messages, roomState, requestRoomCreation } = useServer();
 
     function joinRoomChangeHandler(e) {
         setJoinRoomLink(e)
@@ -30,7 +31,9 @@ function Home() {
                 <img src={logo} className="logo" />
                 <NickNameInput />
                 <JoinRoom />
-                <button onClick={() => { navigate(`${Math.random().toString(36).slice(2, 7)}/host/lobby`) }}>Host Room</button>
+                <button onClick={() => { requestRoomCreation((roomID) => { navigate(`/${roomID}/host/lobby`) }) }}>
+                    Host Room
+                </button>
             </div>
         </>
     )
