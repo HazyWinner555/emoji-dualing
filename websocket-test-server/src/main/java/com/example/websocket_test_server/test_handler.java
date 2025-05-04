@@ -164,6 +164,20 @@ public class test_handler extends TextWebSocketHandler {
                         });
                 break;
 
+            case "GET_DEFAULT_USERNAME":
+                if (parts.length < 2) {
+                    System.out.println("Invalid GET_DEFAULT_USERNAME format");
+                    break;
+                }
+                String defaultUsername = parts[1].trim();
+                if (defaultUsername.isEmpty()) {
+                    System.out.println("Default username cannot be empty");
+                    break;
+                }
+                playerUsernames.put(playerId, defaultUsername);
+                session.sendMessage(new TextMessage("DEFAULT_USERNAME_SET:" + defaultUsername));
+                break;
+
             case "SET_USERNAME":
                     if (parts.length < 2) {
                         System.out.println("Invalid SET_USERNAME format");

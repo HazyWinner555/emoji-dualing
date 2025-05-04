@@ -7,6 +7,7 @@
     The only non-Page Component that needs updating is NickNameInput.
 */
 
+<<<<<<< Updated upstream
 import { useNavigate } from "react-router-dom"
 import logo from "../assets/Emoji Dueling Logo.png"
 import { useEffect, useState } from "react"
@@ -43,4 +44,4 @@ function Home() {
     )
 }
 
-export default Home
+export default Home;
