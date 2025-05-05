@@ -34,21 +34,30 @@ function UserStatus(props) {
         )
     }
     else if (props.view === "start") {
-        return (<>
-            <div className="UserStatusContainer">
-                <div className="block">
+        let host = "na";
+        if (props.isHost == true) {
+            host = "hostContainer"
+        } else {
+            host = "guestContainer"
+        }
+
+        return (
+        <>
+            <div className={`userStatusContainer startContainer ${host}`}>
+                <div className="usernamePara">
                     {props.username}
                 </div>
-                <div className="wl">
+                <div className="win-lose">
                     <div className="block">
-                        {props.wins}
+                        Wins: {props.wins}
                     </div>
                     <div className="block">
-                        {props.losses}
+                        Losses: {props.losses}
                     </div>
                 </div>
             </div>
-        </>)
+        </>
+        )
     }
     else if (props.view === "duel") {
         let heartString = ""
@@ -64,7 +73,7 @@ function UserStatus(props) {
             heartString += "🖤"
         }
 
-        if (props.isOpponent) {
+        if (props.isOpponent == false) {
             return (<div className={`userStatusContainer ${containerClass}`}> {/*Flip justify-content between user and opponent.*/}
                 <p className="usernamePara">
                     {props.username}
@@ -90,6 +99,7 @@ function UserStatus(props) {
         else {
             containerClass = "loserContainer"
         }
+        
         return (
             <>
                 <div className={`userStatusContainer ${containerClass}`}>

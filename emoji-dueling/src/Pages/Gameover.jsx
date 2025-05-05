@@ -7,7 +7,7 @@
         handleReady() - toggles between ready states (boolean). If opponent has left, does not toggle.
     Navigation buttons should send server calls when the player leaves this page.
  */
-
+import "../css/Gameover.css"
 import { useEffect, useState } from "react"
 import UserStatus from "../components/UserStatus"
 import { useNavigate, useParams } from "react-router-dom"
@@ -33,7 +33,7 @@ function Gameover() {
     const [rounds, setRounds] = useState([])
 
 
-    const [readyButtonClassName, setReadyButtonClassName] = useState("readyButtonUnready")
+    const [readyButtonClassName, setReadyButtonClassName] = useState("readyButtonReady")
 
     function handleReady(e) {                                       // The server should probably handle readying and unreadying.
         if (opponentLeft) {
@@ -90,21 +90,25 @@ function Gameover() {
     return (
         <div className="logo-background">
             {userWin ? <>
+                <h1> VICTORY </h1>
                 <UserStatus winner={userWin} username={userUsername} view="gameover" />
                 <UserStatus winner={opponentWin} username={opponentUsername} view="gameover" />
             </> : <>
+                <h1> DEFEAT </h1>
                 <UserStatus winner={opponentWin} username={opponentUsername} view="gameover" />
                 <UserStatus winner={userWin} username={userUsername} view="gameover" />
             </>}
             {rounds.map((round, index) => {
-                return (<RoundSummary userEmoji={rounds[index][0]} time={rounds[index][1]} isCorrect={rounds[index][2]} />)
+                return (<RoundSummary userEmoji={rounds[index][0]} time={rounds[index][1]} isCorrect={rounds[index][2]} round={index + 1} />)
             })
 
             }
             {/* These buttons should all send calls to the server. */}
+            <div className="game-over-buttons">
             <button className={`rematch-button ${readyButtonClassName}`} onClick={() => { handleReady() }}> {opponentLeft ? "Cannot rematch. Opponent left room." : ""}{userIsReady && !opponentLeft ? "" : "Rematch!"} {userIsReady && !opponentIsReady && !opponentLeft ? "Waiting for opponent..." : ""}</button>
-            <button onClick={() => { navigate(`/${roomCode}/${userIsHost}/lobby`) }}>Return to lobby.</button>
-            <button onClick={() => { navigate(`/`) }}>Return to main menu.</button>
+            <button className="button-blue" onClick={() => { navigate(`/${roomCode}/${userIsHost}/lobby`) }}>Return to Lobby</button>
+            <button className="lc-orange" onClick={() => { navigate(`/`) }}>Main Menu</button>
+            </div>
         </div>
     )
 }

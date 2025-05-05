@@ -178,9 +178,8 @@ function Duel(props) {
 
     return (
         <>
-            {/* player userStatus */}
-            <UserStatus username={userUsername} lives={userLives} isHost={userIsHost} isOpponent={true} view="duel" />
-
+            {/* opponent userstatus */}
+            <UserStatus username={opponentUsername} lives={opponentLives} isHost={opponentIsHost} isOpponent={false} view="duel" />
             <div className="duelPage">
                 {/* question emoji and answer emojis */}
                 <div className="emoji-input-container">
@@ -221,8 +220,8 @@ function Duel(props) {
                     </div>
                     : ""}
             </div>
-            {/* opponent userstatus */}
-            <UserStatus username={opponentUsername} lives={opponentLives} isHost={opponentIsHost} isOpponent={false} view="duel" />
+            {/* player userStatus */}
+            <UserStatus username={userUsername} lives={userLives} isHost={userIsHost} isOpponent={true} view="duel" />
         </>
     )
 }

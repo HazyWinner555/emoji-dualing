@@ -3,17 +3,18 @@
 function RoundSummary(props) {
     var correctnessClassName
     if (props.isCorrect) {
-        correctnessClassName = "correct"
+        correctnessClassName = "go-correct"
     }
     else {
-        correctnessClassName = "incorrect"
+        correctnessClassName = "go-incorrect"
     }
     return (
         <div className={`roundSummary`}>
-            {props.userEmoji}
+            
+            <h2>Round {props.round}:
             <span className={`${correctnessClassName}`}>
-                {props.time}
-            </span>
+            {props.userEmoji}  {props.time}
+            </span></h2>
         </div>
     )
 }

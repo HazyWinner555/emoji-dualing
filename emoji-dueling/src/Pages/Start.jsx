@@ -10,6 +10,7 @@
 import UserStatus from "../components/UserStatus"
 import "../css/Start.css"
 import logo from "../assets/Emoji Dueling Logo.png"
+import vsLogo from "../assets/vsLogo.png"
 import { useState } from "react"
 import { useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
@@ -22,15 +23,16 @@ function Start() {
     const userIsHost = userIsHostParam === "host"
     const opponentIsHost = !userIsHost
 
-    let usernameX, usernameY, xWin, xLoss, yLoss, yWin
+    let playerUsername, opponentUsername, playerWins, playerLoss, opponentWins, opponentLoss, isHost
     
     if (isTestng) {                                                 // All of thiss data should be set up by the server.
-        usernameX = "abc"
-        usernameY = "bcd"
-        xWin = 10
-        xLoss = 0
-        yWin = 0
-        yLoss = 10
+        playerUsername = "😈 Moji Master"
+        opponentUsername = "👑 Moticon Champion"
+        playerWins = 10
+        playerLoss = 0
+        opponentWins = 0
+        opponentLoss = 10
+        isHost = userIsHost
     }
     useEffect(() => {
         const moveToDuelPage = setTimeout(() => {
@@ -41,13 +43,13 @@ function Start() {
 
     return (
         <>
-            <div className="container">
-                <div className="x">
-                    <UserStatus username={usernameX} wins={xWin} losses={xLoss} view={"start"} />
+            <div>
+                <div>
+                    <UserStatus username={opponentUsername} wins={opponentWins} losses={opponentLoss} view={"start"} isHost={isHost} />
                 </div>
-                <img src={logo} className="logo" />
-                <div className="y">
-                    <UserStatus username={usernameY} wins={yWin} losses={yLoss} view={"start"} />
+                <img src={vsLogo} className="vslogo" />
+                <div>
+                    <UserStatus username={playerUsername} wins={playerWins} losses={playerLoss} view={"start"} isHost={isHost} />
                 </div>
             </div>
         </>
