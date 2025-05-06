@@ -12,7 +12,7 @@ import { useEffect, useState } from "react"
 import UserStatus from "../components/UserStatus"
 import { useNavigate, useParams } from "react-router-dom"
 import RoundSummary from "../components/RoundSummary";
-
+import "../css/Gameover.css"
 
 function Gameover() {
     const isTesting = true;
@@ -33,18 +33,20 @@ function Gameover() {
     const [rounds, setRounds] = useState([])
 
 
-    const [readyButtonClassName, setReadyButtonClassName] = useState("readyButtonUnready")
+    const [rematchButtonClassName, setRematchButtonClassName] = useState("rematchButtonUnready")
 
-    function handleReady(e) {                                       // The server should probably handle readying and unreadying.
+    function handleReady(e) {
+        console.log(userIsReady)
+        // The server should probably handle readying and unreadying.
         if (opponentLeft) {
-            setReadyButtonClassName("opponentLeft")
+            setRematchButtonClassName("opponentLeft")
         }
         else if (userIsReady) {
-            setReadyButtonClassName("readyButtonReady")
+            setRematchButtonClassName("rematchButtonUnready")
             setUserIsReady(!userIsReady)
         }
         else if (!userIsReady) {
-            setReadyButtonClassName("readyButtonUnready")
+            setRematchButtonClassName("rematchButtonReady")
             setUserIsReady(!userIsReady)
         }
         console.log(userIsReady)
@@ -88,7 +90,7 @@ function Gameover() {
 
 
     return (
-        <div className="logo-background">
+        <div className="logo-background gameoverContainer">
             {userWin ? <>
                 <UserStatus winner={userWin} username={userUsername} view="gameover" />
                 <UserStatus winner={opponentWin} username={opponentUsername} view="gameover" />
@@ -96,15 +98,18 @@ function Gameover() {
                 <UserStatus winner={opponentWin} username={opponentUsername} view="gameover" />
                 <UserStatus winner={userWin} username={userUsername} view="gameover" />
             </>}
-            {rounds.map((round, index) => {
-                return (<RoundSummary userEmoji={rounds[index][0]} time={rounds[index][1]} isCorrect={rounds[index][2]} />)
-            })
-
-            }
+            <div className="roundSummaryContainer">
+                {rounds.map((round, index) => {
+                    return (<RoundSummary index={index} userEmoji={rounds[index][0]} time={rounds[index][1]} isCorrect={rounds[index][2]} />)
+                })
+                }
+            </div>
             {/* These buttons should all send calls to the server. */}
-            <button className={`rematch-button ${readyButtonClassName}`} onClick={() => { handleReady() }}> {opponentLeft ? "Cannot rematch. Opponent left room." : ""}{userIsReady && !opponentLeft ? "" : "Rematch!"} {userIsReady && !opponentIsReady && !opponentLeft ? "Waiting for opponent..." : ""}</button>
-            <button onClick={() => { navigate(`/${roomCode}/${userIsHost}/lobby`) }}>Return to lobby.</button>
-            <button onClick={() => { navigate(`/`) }}>Return to main menu.</button>
+            <button className={`rematchButton ${rematchButtonClassName}`} onClick={() => {
+                handleReady()
+            }}> {opponentLeft ? "Cannot rematch. Opponent left room." : ""}{userIsReady && !opponentLeft ? "" : "Rematch!"} {userIsReady && !opponentIsReady && !opponentLeft ? "Waiting for opponent..." : ""}</button>
+            <button className="returnToLobbbyButton" onClick={() => { navigate(`/${roomCode}/${userIsHost}/lobby`) }}>Return to lobby.</button>
+            <button className="returnToMainMenuButton" onClick={() => { navigate(`/`) }}>Return to main menu.</button>
         </div>
     )
 }

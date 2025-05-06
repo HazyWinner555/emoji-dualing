@@ -12,26 +12,24 @@ function UserStatus(props) {
     }
     if (props.view === "lobby") {
         return (
-            <>
-                <div className={`userStatusContainer ${containerClass}`}>
-                    <div className="scoreContainer">
-                        <p className="usernamePara">
-                            {props.username ? props.username : "👻 Waiting for opponent"}
-                        </p>
-
-                        <p className="winsLossesPara">
-                            {props.username ? `Wins ${props.score[0]} | Losses ${props.score[1]} ` : ""}
-                        </p>
-
-                    </div>
-
-                    <div className="readyContainer">
-
-                        {props.isReady ? "✔️" : "✖️"}
-                    </div>
+            <div className={`userStatusContainer ${containerClass}`}>
+                <div className="scoreContainer">
+                    <p className="usernamePara">
+                        {!props.username || props.username === "null" 
+                            ? "👻 Waiting for opponent..." 
+                            : props.username}
+                    </p>
+                    <p className="winsLossesPara">
+                        {props.username && props.username !== "null" 
+                            ? `Wins ${props.score[0]} | Losses ${props.score[1]}` 
+                            : ""}
+                    </p>
                 </div>
-            </>
-        )
+                <div className="readyContainer">
+                    {props.isReady ? "✔️" : "✖️"}
+                </div>
+            </div>
+        );
     }
     else if (props.view === "start") {
         return (<>
@@ -76,10 +74,10 @@ function UserStatus(props) {
         }
         return (
             <>
-                <div className={`userStatusContainer ${containerClass}`}>
+                <div className={`userStatusContainer ${containerClass} gameover`}>
                     <div className="scoreContainer">
                         <p className="usernamePara">
-                            {props.username}
+                            <span className="userEmoji">{props.username ? (props.username.slice(0, 2)) : ""}</span>{props.username ? props.username.slice(2, props.username.legnth) : ""}
                         </p>
                     </div>
 

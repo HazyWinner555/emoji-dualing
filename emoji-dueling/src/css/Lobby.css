@@ -103,3 +103,8 @@ p {
     border: red 10px solid;
     border-radius: 10px;
 }
+
+.exitLobbbyButton {
+    background-color: rgb(134, 0, 211);
+    border: rgb(28, 15, 66) 5px solid;
+}
