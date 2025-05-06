@@ -6,14 +6,10 @@ import Duel from './Pages/Duel';
 import "./App.css"
 import Lobby from './Pages/Lobby';
 import Start from './Pages/Start';
-import { ServerProvider } from './components/ServerProvider';
-
-const ServerContext = createContext();
 
 function App() {
   return (
     <>
-      {/* <ServerProvider > */}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -23,7 +19,6 @@ function App() {
           <Route path={`/:roomCode/:userIsHost/gameover`} element={<Gameover />} />
         </Routes>
       </BrowserRouter>
-      {/* </ServerProvider> */}
     </>
   )
 }

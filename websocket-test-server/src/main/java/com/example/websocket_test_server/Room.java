@@ -40,30 +40,41 @@ public class Room {
     // should remove player if they disconnect
     public void removePlayer(UUID playerId) {
         if (player1 != null && player1.getId().equals(playerId)) {
+            // If host is leaving, notify player2
+            if (player2 != null) {
+                sendMessageToPlayer(player2, "HOST_DISCONNECTED");
+            }
             player1 = null;
         } else if (player2 != null && player2.getId().equals(playerId)) {
+            // If guest is leaving, notify player1
+            if (player1 != null) {
+                sendMessageToPlayer(player1, "PLAYER_DISCONNECTED");
+            }
             player2 = null;
         }
     }
 
     public static void assignToRoom(Player player, Map<String, Room> rooms, String roomID) {
-        // if joining an existing room
         if (roomID != null && !roomID.isEmpty()) {
             Room selectedRoom = rooms.get(roomID);
             if (selectedRoom != null && selectedRoom.player2 == null && 
                 !selectedRoom.player1.getId().equals(player.getId())) {
+                
                 selectedRoom.player2 = player;
-                selectedRoom.notifyPlayerJoined(player);
-                //selectedRoom.startGame(); // shouldn't automatically start anymore
+                
+                // Notify both players immediately
+                selectedRoom.sendMessageToPlayer(selectedRoom.player1, 
+                    "OPPONENT_JOINED:" + player.getUsername());
+                selectedRoom.sendMessageToPlayer(player, 
+                    "OPPONENT_JOINED:" + selectedRoom.player1.getUsername());
+                
+                // Send full player info
+                selectedRoom.sendPlayerInfo(selectedRoom.player1);
+                selectedRoom.sendPlayerInfo(player);
                 return;
-            }
+            } 
         }
-        
-        // otherwise create new room
-        Room newRoom = new Room(player);
-        rooms.put(newRoom.roomID, newRoom);
-        newRoom.sendMessageToPlayer(player, "ROOM_CREATED:" + newRoom.roomID);
-    }
+        }
 
     public static void removeRoom(String roomID, Map<String, Room> rooms) {
         rooms.remove(roomID);
@@ -124,6 +135,35 @@ public class Room {
         }, startTime - System.currentTimeMillis());
     }
     */ // deprecated
+
+    public void broadcastUsernameChange(UUID playerId, String newUsername) {
+        sendMessageToPlayer(player1, "USERNAME_CHANGED:" + playerId + ":" + newUsername);
+        if (player2 != null) {
+            sendMessageToPlayer(player2, "USERNAME_CHANGED:" + playerId + ":" + newUsername);
+        }
+    }
+
+    private void sendPlayerInfo(Player player) {
+        Player opponent = player.getId().equals(player1.getId()) ? player2 : player1;
+        
+        // Send player their own info
+        String playerInfo = String.format("PLAYER_INFO:%s:%d:%d",
+            player.getUsername(),
+            player.getWins().size(),
+            player.getLosses().size());
+        sendMessageToPlayer(player, playerInfo);
+        
+        // Send opponent info if available
+        if (opponent != null) {
+            String opponentInfo = String.format("OPPONENT_INFO:%s:%d:%d",
+                opponent.getUsername(),
+                opponent.getWins().size(),
+                opponent.getLosses().size());
+            sendMessageToPlayer(player, opponentInfo);
+        } else {
+            sendMessageToPlayer(player, "OPPONENT_INFO:null:0:0");
+        }
+    }
 
     public void sendReactionInfo(int answer, Map<String, Room> rooms) {
         if (gameOver || player1 == null || player2 == null) {
@@ -248,12 +288,16 @@ public class Room {
         }
     }
 
-    public void sendMessageToPlayer(Player player, String message) {
-        if (player != null && player.getChannel().isOpen()) {
+    public synchronized void sendMessageToPlayer(Player player, String message) {
+        if (player != null && player.getChannel() != null && player.getChannel().isOpen()) {
             try {
-                player.getChannel().sendMessage(new TextMessage(message));
+                synchronized (player.getChannel()) {
+                    player.getChannel().sendMessage(new TextMessage(message));
+                }
             } catch (IOException e) {
-                System.out.println("server blocked your message smh, player id: " + player.getId());
+                System.out.println("Failed to send message to player " + player.getId() + ": " + e.getMessage());
+                // Remove player if connection is broken
+                removePlayer(player.getId());
             }
         }
     }

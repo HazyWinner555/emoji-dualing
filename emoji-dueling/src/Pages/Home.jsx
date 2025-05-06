@@ -18,6 +18,7 @@ import ServerConnection from "../components/ServerConnection";
 function Home() {
     const [roomID, setRoomID] = useState(null);
     const [joinRoomLink, setJoinRoomLink] = useState("");
+    const [username, setUsername] = useState("");
     const navigate = useNavigate();
     const socket = ServerConnection();
 
@@ -28,6 +29,8 @@ function Home() {
                     const newRoomID = event.data.split(":")[1];
                     setRoomID(newRoomID);
                     navigate(`/${newRoomID}/host/lobby`);
+                } else if (event.data.startsWith("DEFAULT_USERNAME_SET:")) {
+                    setUsername(event.data.split(":")[1]);
                 }
             };
             
@@ -40,8 +43,31 @@ function Home() {
     }, [socket, navigate]);
 
     const createRoomAndNavigate = useCallback(() => {
-        if (socket && socket.readyState === WebSocket.OPEN) {
+        if (!socket) {
+            alert("Not connected to server. Please refresh the page.");
+            return;
+        }
+    
+        // Check connection state with more detailed handling
+        if (socket.readyState === WebSocket.CONNECTING) {
+            const timeout = setTimeout(() => {
+                if (socket.readyState !== WebSocket.OPEN) {
+                    alert("Connection taking too long. Please refresh the page.");
+                }
+            }, 2000);
+            return () => clearTimeout(timeout);
+        }
+    
+        if (socket.readyState !== WebSocket.OPEN) {
+            alert("Connection not ready. Please wait...");
+            return;
+        }
+    
+        try {
             socket.send("CREATE_ROOM");
+        } catch (error) {
+            console.error("Error sending CREATE_ROOM:", error);
+            alert("Failed to create room. Please try again.");
         }
     }, [socket]);
 
@@ -49,14 +75,24 @@ function Home() {
         setJoinRoomLink(e.target.value);
     }
 
+    const handleUsernameChange = (newUsername) => {
+        setUsername(newUsername);
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.send(`SET_USERNAME:${newUsername}`);
+        }
+    };
+
     return (
         <div className="container">
             <img src={logo} className="logo" alt="Emoji Dueling Logo" />
-            <NickNameInput />
+            <NickNameInput 
+                onUsernameChange={handleUsernameChange} 
+                initialUsername={username}
+            />
             <JoinRoom onChange={joinRoomChangeHandler} />
             <button onClick={createRoomAndNavigate}>Host Room</button>
         </div>
     );
 }
 
-export default Home;
+export default Home

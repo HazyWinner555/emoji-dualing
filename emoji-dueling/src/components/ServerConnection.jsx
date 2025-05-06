@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 
 let socketInstance = null;
 
-
 const ServerConnection = () => {
   const [socket, setSocket] = useState(null);
 

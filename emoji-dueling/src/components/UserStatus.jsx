@@ -12,26 +12,24 @@ function UserStatus(props) {
     }
     if (props.view === "lobby") {
         return (
-            <>
-                <div className={`userStatusContainer ${containerClass}`}>
-                    <div className="scoreContainer">
-                        <p className="usernamePara">
-                            {props.username ? props.username : "👻 Waiting for opponent"}
-                        </p>
-
-                        <p className="winsLossesPara">
-                            {props.username ? `Wins ${props.score[0]} | Losses ${props.score[1]} ` : ""}
-                        </p>
-
-                    </div>
-
-                    <div className="readyContainer">
-
-                        {props.isReady ? "✔️" : "✖️"}
-                    </div>
+            <div className={`userStatusContainer ${containerClass}`}>
+                <div className="scoreContainer">
+                    <p className="usernamePara">
+                        {!props.username || props.username === "null" 
+                            ? "👻 Waiting for opponent..." 
+                            : props.username}
+                    </p>
+                    <p className="winsLossesPara">
+                        {props.username && props.username !== "null" 
+                            ? `Wins ${props.score[0]} | Losses ${props.score[1]}` 
+                            : ""}
+                    </p>
                 </div>
-            </>
-        )
+                <div className="readyContainer">
+                    {props.isReady ? "✔️" : "✖️"}
+                </div>
+            </div>
+        );
     }
     else if (props.view === "start") {
         return (<>
