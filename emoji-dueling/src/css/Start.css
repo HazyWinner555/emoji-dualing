@@ -1,16 +1,10 @@
-.UserStatusContainer {
-    width: 300px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
-.wl {
+.win-lose {
     display: flex;
     flex-direction: column;
 }
-.x {
-    background-color: red;
-}
-.y {
-    background-color: blue;
+
+.vslogo {
+    margin:-60px;
+    z-index:-700;
+    left: 50%;
 }

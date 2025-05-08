@@ -7,11 +7,13 @@ function RoomCode(props) {
     }
     return (
         <>
+            <div className="roomCode">
             <p>Room Code </p>
             <div className="roomCodeInputContainer">
-                <input readOnly
-                    className="roomCodeInput" value={roomCode} />
+                
+                <p className="roomCodeInput">{roomCode}</p>
                 <button className="copyButton" onClick={(e) => { copyRoomCode(e) }}>📋</button>
+            </div>
             </div>
         </>
     )

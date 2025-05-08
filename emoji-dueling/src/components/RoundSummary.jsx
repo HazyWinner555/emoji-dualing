@@ -3,10 +3,10 @@
 function RoundSummary(props) {
     var correctnessClassName
     if (props.isCorrect) {
-        correctnessClassName = "correct"
+        correctnessClassName = "go-correct"
     }
     else {
-        correctnessClassName = "incorrect"
+        correctnessClassName = "go-incorrect"
     }
     return (
         <div className={`roundSummary`}>

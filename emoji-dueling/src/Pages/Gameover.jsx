@@ -7,7 +7,7 @@
         handleReady() - toggles between ready states (boolean). If opponent has left, does not toggle.
     Navigation buttons should send server calls when the player leaves this page.
  */
-
+import "../css/Gameover.css"
 import { useEffect, useState } from "react"
 import UserStatus from "../components/UserStatus"
 import { useNavigate, useParams } from "react-router-dom"
@@ -31,8 +31,6 @@ function Gameover() {
     const [opponentLeft, setOpponentLeft] = useState(false)
 
     const [rounds, setRounds] = useState([])
-
-
     const [rematchButtonClassName, setRematchButtonClassName] = useState("rematchButtonUnready")
 
     function handleReady(e) {
@@ -92,9 +90,11 @@ function Gameover() {
     return (
         <div className="logo-background gameoverContainer">
             {userWin ? <>
+                <h1> VICTORY </h1>
                 <UserStatus winner={userWin} username={userUsername} view="gameover" />
                 <UserStatus winner={opponentWin} username={opponentUsername} view="gameover" />
             </> : <>
+                <h1> DEFEAT </h1>
                 <UserStatus winner={opponentWin} username={opponentUsername} view="gameover" />
                 <UserStatus winner={userWin} username={userUsername} view="gameover" />
             </>}

@@ -1,15 +1,81 @@
 .default {
     background-color: gray;
+    border-color:#5d5d5d;
 }
 
 .dark {
     background-color: rgb(70, 70, 70);
+    border-color:#5d5d5d;
 }
 
 .incorrect {
     background-color: red;
+    border-color:maroon;
 }
 
 .correct {
     background-color: green;
+    border-color:darkgreen;
+}
+
+.userStatusContainer {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    height: 80px;
+    min-height: 5em;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    align-items: center;
+    color:white;
+    border-width:0.1875em;
+    border-style:solid;
+    border-radius:0.9375em;
+    margin:auto;
+    width: 50vh;
+    flex-direction:column;
+}
+
+
+.answer-emoji-container {
+    width: 20%;
+    height: 3.5em;
+    font-size: 2em;
+    border-width: 0.1em;
+    border-radius: 0.3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.question-emoji-container {
+    font-size: 12em;
+    background-color:#808080;
+    width:1.5em;
+    margin:auto;
+    margin:0.1em auto;
+    border-radius:0.1em;
+    border: solid 0.03em #5d5d5d;
+    text-shadow: -2px -2px 0 #5d5d5d, 2px -2px 0 #5d5d5d, -2px 2px 0 #5d5d5d, 2px 2px 0 #5d5d5d;
+}
+
+.emoji-translate-left {
+    margin-left: -30%;
+}
+
+.emoji-input-container {
+    margin-bottom:3em;
+}
+
+
+.answers-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5em;
+}
+
+.hearts {
+    font-size:2em;
 }
