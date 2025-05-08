@@ -1,4 +1,18 @@
+.joinRoomContainer {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+    justify-content: baseline;
+    height: 50px;
+}
 
-.joinRoomContainer button {
-    margin:15px;
+.joinRoomButton {
+    background-color: blue;
+    border: 5px solid rgb(39, 100, 192)
+}
+
+.hostRoomButton {
+    background-color: rgb(134, 0, 211);
+    border: rgb(28, 15, 66) 5px solid;
 }
