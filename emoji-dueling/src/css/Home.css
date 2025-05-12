@@ -4,15 +4,16 @@
     margin: auto;
     align-items: center;
     justify-content: baseline;
-    height: 50px;
+    margin-top:1.25em;
+    margin-bottom:1.25em;
 }
 
 .joinRoomButton {
-    background-color: blue;
-    border: 5px solid rgb(39, 100, 192)
+    background-color: #004bff;
+    border: 5px solid #002d97;
 }
 
 .hostRoomButton {
-    background-color: rgb(134, 0, 211);
-    border: rgb(28, 15, 66) 5px solid;
+    background-color: #4f00dd;
+    border: #3e00aa 5px solid;
 }

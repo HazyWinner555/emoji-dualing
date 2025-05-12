@@ -90,7 +90,7 @@ function Home() {
                 initialUsername={username}
             />
             <JoinRoom onChange={joinRoomChangeHandler} />
-            <button onClick={createRoomAndNavigate}>Host Room</button>
+            <button className="hostRoomButton" onClick={createRoomAndNavigate}>Host Room</button>
         </div>
     );
 }

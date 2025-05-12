@@ -181,7 +181,7 @@ function Lobby() {
             </button>
             
             <button 
-                className="exitLobbbyButton" 
+                className="hostRoomButton" 
                 onClick={handleExitLobby}
             >
                 Exit Lobby
