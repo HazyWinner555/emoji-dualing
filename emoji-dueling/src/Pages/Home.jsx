@@ -33,9 +33,9 @@ function Home() {
                     setUsername(event.data.split(":")[1]);
                 }
             };
-            
+
             socket.addEventListener('message', handleMessage);
-            
+
             return () => {
                 socket.removeEventListener('message', handleMessage);
             };
@@ -47,7 +47,7 @@ function Home() {
             alert("Not connected to server. Please refresh the page.");
             return;
         }
-    
+
         // Check connection state with more detailed handling
         if (socket.readyState === WebSocket.CONNECTING) {
             const timeout = setTimeout(() => {
@@ -57,12 +57,12 @@ function Home() {
             }, 2000);
             return () => clearTimeout(timeout);
         }
-    
+
         if (socket.readyState !== WebSocket.OPEN) {
             alert("Connection not ready. Please wait...");
             return;
         }
-    
+
         try {
             socket.send("CREATE_ROOM");
         } catch (error) {
@@ -85,12 +85,12 @@ function Home() {
     return (
         <div className="container">
             <img src={logo} className="logo" alt="Emoji Dueling Logo" />
-            <NickNameInput 
-                onUsernameChange={handleUsernameChange} 
+            <NickNameInput
+                onUsernameChange={handleUsernameChange}
                 initialUsername={username}
             />
             <JoinRoom onChange={joinRoomChangeHandler} />
-            <button onClick={createRoomAndNavigate}>Host Room</button>
+            <button className="hostRoomButton" onClick={createRoomAndNavigate}>Host Room</button>
         </div>
     );
 }
