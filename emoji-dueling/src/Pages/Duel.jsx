@@ -32,7 +32,9 @@ function Duel(props) {
     const [questionEmoji, setQuestionEmoji] = useState()
     const [emojiList, setEmojiList] = useState([])
     const [isRevealed, setIsRevealed] = useState(false)
-    const [playerTapEmoji, setPlayerTapEmoji] = useState(null)                    // playerTapEmoji, playerTapStatus, and opponentTapStatus are all for validating taps & locking out once either responds.
+
+    // playerTapEmoji, playerTapStatus, and opponentTapStatus are all for validating taps & locking out once either responds.
+    const [playerTapEmoji, setPlayerTapEmoji] = useState()
     const [playerTapStatus, setPlayerTapStatus] = useState(0)
     const [opponentTapStatus, setOpponentTapStatus] = useState(0)
 

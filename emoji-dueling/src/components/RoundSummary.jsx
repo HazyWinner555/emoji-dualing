@@ -10,13 +10,11 @@ function RoundSummary(props) {
     }
     return (
         <div className={`roundSummary`}>
-            {props.userEmoji}
-            <span className={"round-label"}>
-                Round {props.index}: {" "}
-            </span>
+            
+            <h2>Round {props.round}:
             <span className={`${correctnessClassName}`}>
-                {(props.time / 1000).toFixed(3)} Seconds
-            </span>
+            {props.userEmoji}  {props.time}
+            </span></h2>
         </div>
     )
 }
