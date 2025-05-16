@@ -3,6 +3,7 @@ import UserStatus from "../components/UserStatus"
 import { useNavigate, useParams } from "react-router-dom"
 import EmojiInput from "../components/EmojiInput"
 import "../css/Duel.css"
+import EmojiList from "../components/EmojiList"
 
 /*
     TO DO:
@@ -53,12 +54,40 @@ function Duel(props) {
 
 
     // Establish dummy variables for the user, opponent, and the emojis we're using.
+    function addEmojiToList(emojisChosenInternal) {
+                let rand = Math.floor(Math.random() * (EmojiList.length - 0 + 1)) + 0
+                let different = false
+                while (different = false) {
+                    if (emojisChosenInternal.includes(rand)) {
+                        rand = Math.floor(Math.random() * (EmojiList.length - 0 + 1)) + 0
+                    } else {
+                        different = true
+                    }
+                }
+                
+                    return rand
+                
+    }
+                
+
     useEffect(() => {
         if (isTesting) {
+            console.log(EmojiList);
+            let thisEmojis = [];
+            let emojisChosen = [];
+
+            for (let index = -1; index < 3; index++) {
+                let number = addEmojiToList(emojisChosen)
+
+                emojisChosen.push(number);
+                thisEmojis.push(EmojiList[number]);
+                
+            }
+
             setUserUsername("😈 Moji Master")
             setOpponentUsername("👑 Moticon Champion")
-            setEmojiList(["😈", "👑", "👻", "📋"])
-            setQuestionEmoji("😈")
+            setEmojiList(thisEmojis)
+            setQuestionEmoji(thisEmojis[Math.random() * (3 - 0 + 1)])
             setRoundText("Ready...")
         }
     }, ([]))
