@@ -16,6 +16,7 @@ import JoinRoom from "../components/JoinRoom";
 import ServerConnection from "../components/ServerConnection";
 
 function Home() {
+    const presentationMode = true;
     const [roomID, setRoomID] = useState(null);
     const [joinRoomLink, setJoinRoomLink] = useState("");
     const [username, setUsername] = useState("");
@@ -43,31 +44,36 @@ function Home() {
     }, [socket, navigate]);
 
     const createRoomAndNavigate = useCallback(() => {
-        if (!socket) {
-            alert("Not connected to server. Please refresh the page.");
-            return;
+        if (presentationMode) {
+            navigate("/TEST/host/lobby")
         }
+        else {
+            if (!socket) {
+                alert("Not connected to server. Please refresh the page.");
+                return;
+            }
 
-        // Check connection state with more detailed handling
-        if (socket.readyState === WebSocket.CONNECTING) {
-            const timeout = setTimeout(() => {
-                if (socket.readyState !== WebSocket.OPEN) {
-                    alert("Connection taking too long. Please refresh the page.");
-                }
-            }, 2000);
-            return () => clearTimeout(timeout);
-        }
+            // Check connection state with more detailed handling
+            if (socket.readyState === WebSocket.CONNECTING) {
+                const timeout = setTimeout(() => {
+                    if (socket.readyState !== WebSocket.OPEN) {
+                        alert("Connection taking too long. Please refresh the page.");
+                    }
+                }, 2000);
+                return () => clearTimeout(timeout);
+            }
 
-        if (socket.readyState !== WebSocket.OPEN) {
-            alert("Connection not ready. Please wait...");
-            return;
-        }
+            if (socket.readyState !== WebSocket.OPEN) {
+                alert("Connection not ready. Please wait...");
+                return;
+            }
 
-        try {
-            socket.send("CREATE_ROOM");
-        } catch (error) {
-            console.error("Error sending CREATE_ROOM:", error);
-            alert("Failed to create room. Please try again.");
+            try {
+                socket.send("CREATE_ROOM");
+            } catch (error) {
+                console.error("Error sending CREATE_ROOM:", error);
+                alert("Failed to create room. Please try again.");
+            }
         }
     }, [socket]);
 
@@ -80,7 +86,8 @@ function Home() {
         if (socket && socket.readyState === WebSocket.OPEN) {
             socket.send(`SET_USERNAME:${newUsername}`);
         }
-    };
+    }
+
 
     return (
         <div className="container">

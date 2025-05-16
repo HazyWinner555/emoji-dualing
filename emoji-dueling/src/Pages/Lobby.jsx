@@ -16,12 +16,13 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import ServerConnection from "../components/ServerConnection";
 
 function Lobby() {
+    const presentationMode = true
     const [userUsername, setUserUsername] = useState(null);
-    const [userScore, setUserScore] = useState([0, 0]);
+    const [userScore, setUserScore] = useState();
     const [userIsReady, setUserReady] = useState(false);
     const [username, setUsername] = useState(null);
     const [opponentUsername, setOpponentUsername] = useState(null);
-    const [opponentScore, setOpponentScore] = useState([0, 0]);
+    const [opponentScore, setOpponentScore] = useState();
     const [opponentIsReady, setOpponentReady] = useState(false);
     const [connectionError, setConnectionError] = useState(null);
     const { roomCode, userIsHost: userIsHostParam } = useParams();
@@ -33,94 +34,109 @@ function Lobby() {
     let refreshInterval;
 
     useEffect(() => {
-        if (!socket || socket.readyState !== WebSocket.OPEN) {
-            setConnectionError("Not connected to server");
-            return;
+        if (presentationMode) {
+            setUserUsername("😈 Moji Master")
+            setOpponentUsername("👑 Moticon Champion")
+            setOpponentReady(true)
+            setUserScore([(Number(localStorage.getItem('wins')) || 0), (Number(localStorage.getItem('losses')) || 0)])
+            setOpponentScore([(Number(localStorage.getItem('losses')) || 0), (Number(localStorage.getItem('wins')) || 0)])
+
         }
+        else {
+            if (!socket || socket.readyState !== WebSocket.OPEN) {
+                setConnectionError("Not connected to server");
+                return;
+            }
 
-        // Initial data load when first joining
-        if (location.state?.justJoined) {
-            socket.send("GET_PLAYER_INFO");
-            socket.send("GET_OPPONENT_INFO");
-        }
-
-        const handleMessage = (event) => {
-            const data = event.data;
-            console.log("Received:", data); // Debug logging
-            
-            if (data.startsWith("PLAYER_INFO:")) {
-                const parts = data.split(":");
-                setUserUsername(parts[1]);
-                setUserScore([parseInt(parts[2]), parseInt(parts[3])]);
-            }
-            else if (data.startsWith("OPPONENT_INFO:")) {
-                const parts = data.split(":");
-                setOpponentUsername(parts[1] === "null" ? null : parts[1]);
-                setOpponentScore([parseInt(parts[2]), parseInt(parts[3])]);
-            }
-            else if (data === "OPPONENT_READY") {
-                setOpponentReady(true);
-            }
-            else if (data === "OPPONENT_UNREADY") {
-                setOpponentReady(false);
-            }
-            else if (data === "GAME_STARTING") {
-                navigate(`/${roomCode}/${userIsHostParam}/start`);
-            }
-            else if (data === "PLAYER_JOINED") {
-                // When new player joins, refresh opponent info
-                socket.send("GET_OPPONENT_INFO");
-            }
-            else if (data === "HOST_DISCONNECTED") {
-                alert("The host has left the game. Returning to main menu.");
-                navigate("/");
-            }
-            else if (data === "PLAYER_DISCONNECTED") {
-                setOpponentUsername(null);
-                setOpponentScore([0, 0]);
-                setOpponentReady(false);
-                alert("Your opponent has left the game");
-            }
-            else if (data.startsWith("ERROR:")) {
-                setConnectionError(data.split(":")[1]);
-            }
-        };
-
-        refreshInterval = setInterval(() => {
-            if (socket && socket.readyState === WebSocket.OPEN) {
+            // Initial data load when first joining
+            if (location.state?.justJoined) {
                 socket.send("GET_PLAYER_INFO");
                 socket.send("GET_OPPONENT_INFO");
             }
-        }, 500);
 
-        socket.addEventListener('message', handleMessage);
-        return () => {
-            socket.removeEventListener('message', handleMessage);
-            clearInterval(refreshInterval);
-            
-            // Send leave message when exiting lobby
-            if (socket && socket.readyState === WebSocket.OPEN) {
-                socket.send("LEAVE");
-            }
-        };
+            const handleMessage = (event) => {
+                const data = event.data;
+                console.log("Received:", data); // Debug logging
+
+                if (data.startsWith("PLAYER_INFO:")) {
+                    const parts = data.split(":");
+                    setUserUsername(parts[1]);
+                    setUserScore([parseInt(parts[2]), parseInt(parts[3])]);
+                }
+                else if (data.startsWith("OPPONENT_INFO:")) {
+                    const parts = data.split(":");
+                    setOpponentUsername(parts[1] === "null" ? null : parts[1]);
+                    setOpponentScore([parseInt(parts[2]), parseInt(parts[3])]);
+                }
+                else if (data === "OPPONENT_READY") {
+                    setOpponentReady(true);
+                }
+                else if (data === "OPPONENT_UNREADY") {
+                    setOpponentReady(false);
+                }
+                else if (data === "GAME_STARTING") {
+                    navigate(`/${roomCode}/${userIsHostParam}/start`);
+                }
+                else if (data === "PLAYER_JOINED") {
+                    // When new player joins, refresh opponent info
+                    socket.send("GET_OPPONENT_INFO");
+                }
+                else if (data === "HOST_DISCONNECTED") {
+                    alert("The host has left the game. Returning to main menu.");
+                    navigate("/");
+                }
+                else if (data === "PLAYER_DISCONNECTED") {
+                    setOpponentUsername(null);
+                    setOpponentScore([0, 0]);
+                    setOpponentReady(false);
+                    alert("Your opponent has left the game");
+                }
+                else if (data.startsWith("ERROR:")) {
+                    setConnectionError(data.split(":")[1]);
+                }
+            };
+
+            refreshInterval = setInterval(() => {
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                    socket.send("GET_PLAYER_INFO");
+                    socket.send("GET_OPPONENT_INFO");
+                }
+            }, 500);
+
+            socket.addEventListener('message', handleMessage);
+            return () => {
+                socket.removeEventListener('message', handleMessage);
+                clearInterval(refreshInterval);
+
+                // Send leave message when exiting lobby
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                    socket.send("LEAVE");
+                }
+            };
+        }
     }, [socket, roomCode, userIsHostParam]);
 
     const handleReady = (e) => {
         e.preventDefault();
-        if (!socket || socket.readyState !== WebSocket.OPEN) {
-            setConnectionError("Not connected to server");
-            return;
+        if (presentationMode) {
+            navigate(`/${roomCode}/${userIsHost}/start`)
         }
+        else {
+            if (!socket || socket.readyState !== WebSocket.OPEN) {
+                setConnectionError("Not connected to server");
+                return;
+            }
 
-        const newReadyState = !userIsReady;
-        setUserReady(newReadyState);
-        
-        if (newReadyState) {
-            socket.send("READY_UP");
-        } else {
-            socket.send("UNREADY");
-        }
-    };
+            const newReadyState = !userIsReady;
+            setUserReady(newReadyState);
+
+            if (newReadyState) {
+                socket.send("READY_UP");
+            } else {
+                socket.send("UNREADY");
+            }
+        };
+    }
 
     const handleUsernameChange = (newUsername) => {
         if (socket && socket.readyState === WebSocket.OPEN) {
@@ -144,23 +160,23 @@ function Lobby() {
     return (
         <div className="lobbyContainer">
 
-            
-            <UserStatus 
-                username={userUsername} 
+
+            <UserStatus
+                username={userUsername}
                 onChange={handleUsernameChange}
-                isReady={userIsReady} 
-                isHost={userIsHost} 
-                score={userScore} 
-                view="lobby" 
+                isReady={userIsReady}
+                isHost={userIsHost}
+                score={userScore}
+                view="lobby"
             />
-            <UserStatus 
-                username={opponentUsername || "null"} 
-                isReady={opponentIsReady} 
-                isHost={opponentIsHost} 
-                score={opponentScore} 
-                view="lobby" 
+            <UserStatus
+                username={opponentUsername || "null"}
+                isReady={opponentIsReady}
+                isHost={opponentIsHost}
+                score={opponentScore}
+                view="lobby"
             />
-            
+
             <NicknameInput
                 onUsernameChange={(newUsername) => {
                     if (socket && socket.readyState === WebSocket.OPEN) {
@@ -171,17 +187,17 @@ function Lobby() {
                 initialUsername={userUsername}
             />
             <RoomCode roomCode={roomCode} />
-            
-            <button 
-                className={"readyButton " + readyButtonClassName} 
+
+            <button
+                className={"readyButton " + readyButtonClassName}
                 onClick={handleReady}
                 disabled={!opponentUsername} // Disable if no opponent
             >
                 {userIsReady ? "UNREADY" : "READY"}
             </button>
-            
-            <button 
-                className="exitLobbbyButton" 
+
+            <button
+                className="exitLobbbyButton"
                 onClick={handleExitLobby}
             >
                 Exit Lobby
