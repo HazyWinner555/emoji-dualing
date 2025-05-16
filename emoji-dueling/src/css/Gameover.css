@@ -13,7 +13,7 @@
 
 .victoryContainer {
     text-shadow: none;
-    font-size: 3em;
+    font-size: 2.2em;
 }
 
 .correct {
@@ -28,6 +28,7 @@
 
 .roundSummary {
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    font-size: x-large;
 }
 
 .game-over-buttons {
@@ -93,7 +94,6 @@
     font-weight: unset;
 }
 
-.roundSummaryContainer {}
 
 .roundSummary .correct {
     color: green;

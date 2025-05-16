@@ -47,7 +47,7 @@ function Duel(props) {
 
     // This is so that we can use useNavigate
     const navigate = useNavigate()
-    
+
     // Random number applied to the timer between each round.
     let delay = 3000;
 
@@ -69,13 +69,18 @@ function Duel(props) {
             setGameover(true)
             if (userLives > opponentLives) {
                 setRoundText(`Game Over!\n You won!`)
+                localStorage.setItem("victory", true)
+                localStorage.setItem("wins", (Number(localStorage.getItem("wins")) + 1))
+                console.log(localStorage.getItem("wins"))
             }
             else {
                 setRoundText(`Game Over!\n You lost!`)
+                localStorage.setItem("victory", false)
+                localStorage.setItem("losses", (Number(localStorage.getItem("losses")) + 1))
+                console.log(localStorage.getItem("losses"))
             }
-            console.log(reactionTimes)
-            // FIGURE OUT A BETTER WAY TO PASS THE REACTION TIMES FORWARD
 
+            console.log(reactionTimes)
             const moveToGameoverPage = setTimeout(() => {
 
                 navigate(`/${roomCode}/${userIsHostParam}/gameover`, { state: { reactionTimes } })
@@ -84,7 +89,7 @@ function Duel(props) {
             return () => clearTimeout(moveToGameoverPage)
         }
         else {
-            
+
 
             const resetRoundVariables = setTimeout(() => {
                 setPlayerTapStatus(0)
@@ -92,7 +97,7 @@ function Duel(props) {
                 setRoundText("Ready...")
                 setIsRevealed(false)
                 // Pick new emoji                               // UNFINISHED
-                setTimeout(() =>  {
+                setTimeout(() => {
                     setRoundText("Go!")
                     setRoundStart(Date.now());
                     setIsRevealed(true)
@@ -102,10 +107,10 @@ function Duel(props) {
 
 
             return () => clearTimeout(resetRoundVariables);
-            
-            
-            
-            
+
+
+
+
             // send also who was the ender
 
         }
@@ -119,6 +124,7 @@ function Duel(props) {
     function endRound(ender, isCorrect) {
         const roundEnd = Date.now();
         const timeElapsed = roundEnd - roundStart
+        console.log(ender)
         setReactionTimes(prev => [...prev, [ender, timeElapsed, isCorrect]]);
         return (timeElapsed)
     }
@@ -128,7 +134,7 @@ function Duel(props) {
             // LOCAL FAKE SERVER
             if (!(playerTapStatus > 0) && !(opponentTapStatus > 0) && !gameover && userLives > 0 && opponentLives > 0) { // if the game is stll valid
                 if (roundStart) {
-                    const timeElapsed = endRound("player", emoji === questionEmoji)
+                    const timeElapsed = endRound(userUsername, emoji === questionEmoji)
                     if (emoji === questionEmoji) { // if the user is right
                         setPlayerTapStatus(2); // correct player tap
                         setOpponentLives(opponentLives - 1);
@@ -154,7 +160,7 @@ function Duel(props) {
                 // if nobody's tapped yet, and the game isn't over
                 setOpponentTapStatus(1) // opponent tap received
                 if (roundStart) {
-                    const timeElapsed = endRound("opponent", emoji === questionEmoji)
+                    const timeElapsed = endRound(opponentUsername, emoji === questionEmoji)
                     if (emoji === questionEmoji) { // correct opponent tap
                         setUserLives(userLives - 1);
                         setRoundText("Too slow! " + timeElapsed)
@@ -183,22 +189,22 @@ function Duel(props) {
                 <div className="emoji-input-container">
                     <h1>{roundText}</h1>
                     <div className="question-container">
-                    <EmojiInput emoji={questionEmoji} isQuestion={true} isRevealed={isRevealed}
-                        questionEmoji={questionEmoji}
-                        playerTapEmoji={playerTapEmoji}
-                        opponentTapStatus={opponentTapStatus}
-                        playerTapStatus={playerTapStatus}
-                        onPlayerTap={handlePlayerTap} />
+                        <EmojiInput emoji={questionEmoji} isQuestion={true} isRevealed={isRevealed}
+                            questionEmoji={questionEmoji}
+                            playerTapEmoji={playerTapEmoji}
+                            opponentTapStatus={opponentTapStatus}
+                            playerTapStatus={playerTapStatus}
+                            onPlayerTap={handlePlayerTap} />
                     </div>
                     <div className="answers-container">
-                    {emojiList.map((index, key) => {
-                        return (<EmojiInput key={key}
-                            emoji={index} isQuestion={false}
-                            questionEmoji={questionEmoji} playerTapEmoji={playerTapEmoji}
-                            opponentTapStatus={opponentTapStatus} playerTapStatus={playerTapStatus} isRevealed={isRevealed}
-                            onPlayerTap={handlePlayerTap} // Pass the function!
-                        />)
-                    })}
+                        {emojiList.map((index, key) => {
+                            return (<EmojiInput key={key}
+                                emoji={index} isQuestion={false}
+                                questionEmoji={questionEmoji} playerTapEmoji={playerTapEmoji}
+                                opponentTapStatus={opponentTapStatus} playerTapStatus={playerTapStatus} isRevealed={isRevealed}
+                                onPlayerTap={handlePlayerTap} // Pass the function!
+                            />)
+                        })}
                     </div>
                 </div>
                 {/* for testing mock responses (just change the isTesting variable to enable all testing) */}

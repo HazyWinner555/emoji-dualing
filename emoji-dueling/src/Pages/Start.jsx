@@ -22,17 +22,16 @@ function Start() {
     const { roomCode, userIsHost: userIsHostParam } = useParams()
     const userIsHost = userIsHostParam === "host"
     const opponentIsHost = !userIsHost
-
     let playerUsername, opponentUsername, playerWins, playerLoss, opponentWins, opponentLoss, isHost
-    
+
     if (isTestng) {                                                 // All of thiss data should be set up by the server.
         playerUsername = "😈 Moji Master"
         opponentUsername = "👑 Moticon Champion"
-        playerWins = 10
-        playerLoss = 0
-        opponentWins = 0
-        opponentLoss = 10
         isHost = userIsHost
+        playerWins = localStorage.getItem("wins")
+        playerLoss = localStorage.getItem("losses")
+        opponentWins = localStorage.getItem("losses")
+        opponentLoss = localStorage.getItem("wins")
     }
     useEffect(() => {
         const moveToDuelPage = setTimeout(() => {
