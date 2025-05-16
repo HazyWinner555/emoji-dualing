@@ -34,12 +34,12 @@ function Start() {
         opponentLoss = 10
         isHost = userIsHost
     }
-    // useEffect(() => {
-    //     const moveToDuelPage = setTimeout(() => {
-    //         navigate(`/${roomCode}/${userIsHostParam}/duel`)
-    //     }, 3000);
-    //     return () => clearTimeout(moveToDuelPage);
-    // }, []);
+    useEffect(() => {
+        const moveToDuelPage = setTimeout(() => {
+            navigate(`/${roomCode}/${userIsHostParam}/duel`)
+        }, 3000);
+        return () => clearTimeout(moveToDuelPage);
+    }, []);
 
     return (
         <>
