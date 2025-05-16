@@ -88,7 +88,7 @@ function Gameover() {
 
 
     return (
-        <div className="logo-background gameoverContainer">
+        <div className="logo-background">
             {userWin ? <>
                 <h1> VICTORY </h1>
                 <UserStatus winner={userWin} username={userUsername} view="gameover" />
@@ -105,11 +105,13 @@ function Gameover() {
                 }
             </div>
             {/* These buttons should all send calls to the server. */}
-            <button className={`rematchButton ${rematchButtonClassName}`} onClick={() => {
+            <div className="game-over-buttons">
+            <button className={`rematch-button ${rematchButtonClassName}`} onClick={() => {
                 handleReady()
             }}> {opponentLeft ? "Cannot rematch. Opponent left room." : ""}{userIsReady && !opponentLeft ? "" : "Rematch!"} {userIsReady && !opponentIsReady && !opponentLeft ? "Waiting for opponent..." : ""}</button>
-            <button className="returnToLobbbyButton" onClick={() => { navigate(`/${roomCode}/${userIsHost}/lobby`) }}>Return to lobby.</button>
-            <button className="returnToMainMenuButton" onClick={() => { navigate(`/`) }}>Return to main menu.</button>
+            <button className="button-blue" onClick={() => { navigate(`/${roomCode}/${userIsHost}/lobby`) }}>Return to lobby.</button>
+            <button className="lc-orange" onClick={() => { navigate(`/`) }}>Return to main menu.</button>
+            </div>
         </div>
     )
 }

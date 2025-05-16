@@ -91,13 +91,14 @@ function Home() {
 
     return (
         <div className="container">
+            
             <img src={logo} className="logo" alt="Emoji Dueling Logo" />
             <NickNameInput
                 onUsernameChange={handleUsernameChange}
                 initialUsername={username}
             />
             <JoinRoom onChange={joinRoomChangeHandler} />
-            <button className="hostRoomButton" onClick={createRoomAndNavigate}>Host Room</button>
+            <button className="button-purple" onClick={createRoomAndNavigate}>Host Room</button>
         </div>
     );
 }

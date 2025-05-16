@@ -158,9 +158,9 @@ function Lobby() {
 
 
     return (
-        <div className="lobbyContainer">
+        <div className="container">
 
-
+            <div className="lobbyContainers"> 
             <UserStatus
                 username={userUsername}
                 onChange={handleUsernameChange}
@@ -176,7 +176,9 @@ function Lobby() {
                 score={opponentScore}
                 view="lobby"
             />
+            </div>
 
+            <div className="lobbyInputs"> 
             <NicknameInput
                 onUsernameChange={(newUsername) => {
                     if (socket && socket.readyState === WebSocket.OPEN) {
@@ -187,7 +189,9 @@ function Lobby() {
                 initialUsername={userUsername}
             />
             <RoomCode roomCode={roomCode} />
+            </div>
 
+            <div className="lobbyButtons">
             <button
                 className={"readyButton " + readyButtonClassName}
                 onClick={handleReady}
@@ -197,11 +201,12 @@ function Lobby() {
             </button>
 
             <button
-                className="exitLobbbyButton"
+                className="button-purple"
                 onClick={handleExitLobby}
             >
                 Exit Lobby
             </button>
+            </div>
         </div>
     );
 }

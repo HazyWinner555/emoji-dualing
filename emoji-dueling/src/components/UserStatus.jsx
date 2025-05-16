@@ -72,7 +72,7 @@ function UserStatus(props) {
         }
 
         if (props.isOpponent == false) {
-            return (<div className={`userStatusContainer ${containerClass}`}> {/*Flip justify-content between user and opponent.*/}
+            return (<div className={`duelCont userStatusContainer ${containerClass}`}> {/*Flip justify-content between user and opponent.*/}
                 <p className="usernamePara">
                     {props.username}
                 </p>
@@ -80,7 +80,7 @@ function UserStatus(props) {
             </div>
             )
         } else {
-            return (<div className={`userStatusContainer ${containerClass}`}> {/*Flip justify-content between user and opponent.*/}
+            return (<div className={`duelCont userStatusContainer ${containerClass}`}> {/*Flip justify-content between user and opponent.*/}
                 <p className="hearts"> {heartString} </p>
                 <p className="usernamePara">
                     {props.username}
@@ -103,7 +103,7 @@ function UserStatus(props) {
                 <div className={`userStatusContainer ${containerClass} gameover`}>
                     <div className="scoreContainer">
                         <p className="usernamePara">
-                            <span className="userEmoji">{props.username ? (props.username.slice(0, 2)) : ""}</span>{props.username ? props.username.slice(2, props.username.legnth) : ""}
+                            <span className="userEmoji">{props.username ? (props.username.slice(0, 2)) : ""}</span>{props.username ? props.username.slice(2, props.username.length) : ""}
                         </p>
                     </div>
 

@@ -24,11 +24,11 @@ function JoinRoom() {
 
     return (
         <div className="joinRoomContainer">
-            Room Code
+            <p> Room Code </p>
             <input type="text" placeholder="Room Code" value={roomCode} 
-                   onChange={(e) => setRoomCode(e.target.value)} />
-            <button className="joinRoomButton" onClick={handleJoinRoom}>
-                Join Room
+                    onChange={(e) => setRoomCode(e.target.value)} />
+            <button className="button-blue" onClick={handleJoinRoom}>
+                <p> Join Room </p>
             </button>
         </div>
     );

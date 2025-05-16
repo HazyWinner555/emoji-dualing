@@ -34,18 +34,18 @@ function Start() {
         opponentLoss = 10
         isHost = userIsHost
     }
-    useEffect(() => {
-        const moveToDuelPage = setTimeout(() => {
-            navigate(`/${roomCode}/${userIsHostParam}/duel`)
-        }, 3000);
-        return () => clearTimeout(moveToDuelPage);
-    }, []);
+    // useEffect(() => {
+    //     const moveToDuelPage = setTimeout(() => {
+    //         navigate(`/${roomCode}/${userIsHostParam}/duel`)
+    //     }, 3000);
+    //     return () => clearTimeout(moveToDuelPage);
+    // }, []);
 
     return (
         <>
             <div>
                 <div>
-                    <UserStatus username={opponentUsername} wins={opponentWins} losses={opponentLoss} view={"start"} isHost={isHost} />
+                    <UserStatus username={opponentUsername} wins={opponentWins} losses={opponentLoss} view={"start"} isHost={!isHost} />
                 </div>
                 <img src={vsLogo} className="vslogo" />
                 <div>
