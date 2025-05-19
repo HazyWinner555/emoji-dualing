@@ -114,21 +114,22 @@ function Gameover() {
             </div>
             {/* These buttons should all send calls to the server. */}
             <div className="game-over-buttons">
-            <button className={`rematch-button ${rematchButtonClassName}`} onClick={() => {
-                handleReady()
-            }}> {opponentLeft ? "Cannot rematch. Opponent left room." : ""}{userIsReady && !opponentLeft ? "" : "Rematch!"} {userIsReady && !opponentIsReady && !opponentLeft ? "Waiting for opponent..." : ""}</button>
-            <button className="button-blue" onClick={() => {
-                localStorage.removeItem("victory")
-                navigate(`/${roomCode}/${userIsHost}/lobby`)
-            }}>
-                Return to lobby.
-            </button>
-            <button className="lc-orange" onClick={() => {
-                localStorage.removeItem("victory")
-                navigate(`/`)
-            }}>
-                Return to main menu.
-            </button>
+                <button className={`rematch-button ${rematchButtonClassName}`} onClick={() => {
+                    handleReady()
+                }}> {opponentLeft ? "Cannot rematch. Opponent left room." : ""}{userIsReady && !opponentLeft ? "" : "Rematch!"} {userIsReady && !opponentIsReady && !opponentLeft ? "Waiting for opponent..." : ""}</button>
+                <button className="button-blue" onClick={() => {
+                    localStorage.removeItem("victory")
+                    navigate(`/${roomCode}/${userIsHost}/lobby`)
+                }}>
+                    Return to lobby.
+                </button>
+                <button className="lc-orange" onClick={() => {
+                    localStorage.removeItem("victory")
+                    navigate(`/`)
+                }}>
+                    Return to main menu.
+                </button>
+            </div>
         </div>
     )
 }

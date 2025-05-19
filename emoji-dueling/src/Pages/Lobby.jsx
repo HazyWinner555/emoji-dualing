@@ -160,61 +160,62 @@ function Lobby() {
     return (
         <div className="container">
 
-            <div className="lobbyContainers"> 
-            <UserStatus
-                username={userUsername}
-                onChange={handleUsernameChange}
-                isReady={userIsReady}
-                isHost={userIsHost}
-                score={userScore}
-                view="lobby"
-            />
-            <UserStatus
-                username={opponentUsername || "null"}
-                isReady={opponentIsReady}
-                isHost={opponentIsHost}
-                score={opponentScore}
-                view="lobby"
-            />
+            <div className="lobbyContainers">
+                <UserStatus
+                    username={userUsername}
+                    onChange={handleUsernameChange}
+                    isReady={userIsReady}
+                    isHost={userIsHost}
+                    score={userScore}
+                    view="lobby"
+                />
+                <UserStatus
+                    username={opponentUsername || "null"}
+                    isReady={opponentIsReady}
+                    isHost={opponentIsHost}
+                    score={opponentScore}
+                    view="lobby"
+                />
             </div>
 
-            <div className="lobbyInputs"> 
-            <NicknameInput
-                onUsernameChange={(newUsername) => {
-                    if (socket && socket.readyState === WebSocket.OPEN) {
-                        socket.send(`SET_USERNAME:${newUsername}`);
-                        setUserUsername(newUsername); // Update local state
-                    }
-                }}
-                initialUsername={userUsername}
-            />
-            <RoomCode roomCode={roomCode} />
+            <div className="lobbyInputs">
+                <NicknameInput
+                    onUsernameChange={(newUsername) => {
+                        if (socket && socket.readyState === WebSocket.OPEN) {
+                            socket.send(`SET_USERNAME:${newUsername}`);
+                            setUserUsername(newUsername); // Update local state
+                        }
+                    }}
+                    initialUsername={userUsername}
+                />
+                <RoomCode roomCode={roomCode} />
             </div>
 
             <div className="lobbyButtons">
-            <button
-                className={"readyButton " + readyButtonClassName}
-                onClick={handleReady}
-                disabled={!opponentUsername} // Disable if no opponent
-            >
-                {userIsReady ? "UNREADY" : "READY"}
-            </button>
+                <button
+                    className={"readyButton " + readyButtonClassName}
+                    onClick={handleReady}
+                    disabled={!opponentUsername} // Disable if no opponent
+                >
+                    {userIsReady ? "UNREADY" : "READY"}
+                </button>
 
-            <button
-                className="button-purple"
-                onClick={handleExitLobby}
-            >
-                Exit Lobby
-            </button>
+                <button
+                    className="button-purple"
+                    onClick={handleExitLobby}
+                >
+                    Exit Lobby
+                </button>
 
-            <button
-                onClick={() => {
-                    localStorage.clear()
-                    setUserReady(false)
-                }}>
-                Cear local storage
-            </button>
-        </div >
+                <button
+                    onClick={() => {
+                        localStorage.clear()
+                        setUserReady(false)
+                    }}>
+                    Cear local storage
+                </button>
+            </ div>
+        </div>
     );
 }
 
