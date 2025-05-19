@@ -55,6 +55,7 @@ function NicknameInput({ onUsernameChange = () => {}, initialUsername = "" }) {
     const handleChange = (e) => {
         const newUsername = e.target.value;
         setUsername(newUsername);
+        localStorage.setItem("username", newUsername)
         setStatusMessage("");
         setIsValid(true);
 
@@ -66,6 +67,7 @@ function NicknameInput({ onUsernameChange = () => {}, initialUsername = "" }) {
         // If user manually cleared the field
         if (newUsername === "") {
             setIsManuallyCleared(true);
+            localStorage.setItem("username", "😈 Moji Master")
             return;
         }
 

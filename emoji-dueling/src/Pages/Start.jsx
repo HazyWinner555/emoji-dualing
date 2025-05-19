@@ -25,7 +25,7 @@ function Start() {
     let playerUsername, opponentUsername, playerWins, playerLoss, opponentWins, opponentLoss, isHost
 
     if (isTestng) {                                                 // All of thiss data should be set up by the server.
-        playerUsername = "😈 Moji Master"
+        playerUsername = localStorage.getItem("username") ? localStorage.getItem("username") : "😈 Moji Master"
         opponentUsername = "👑 Moticon Champion"
         isHost = userIsHost
         playerWins = localStorage.getItem("wins")

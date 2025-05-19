@@ -22,7 +22,7 @@ function Duel(props) {
     const opponentIsHost = !userIsHost
 
     // username and lives is for display in the boxes, and for tracking when the game ends.
-    const [userUsername, setUserUsername] = useState(null)
+    const [userUsername, setUserUsername] = useState(localStorage.getItem("username") ? localStorage.getItem("username") : "😈 Moji Master")
     const [userLives, setUserLives] = useState(3)
     const [opponentUsername, setOpponentUsername] = useState(null)
     const [opponentLives, setOpponentLives] = useState(3)
@@ -95,7 +95,7 @@ function Duel(props) {
 
             thisEmojis = ["?", "?", "?", "?"];
 
-            setUserUsername("😈 Moji Master")
+            setUserUsername(userUsername)
             setOpponentUsername("👑 Moticon Champion")
             setEmojiList(thisEmojis)
             setQuestionEmoji(thisEmojis[0])

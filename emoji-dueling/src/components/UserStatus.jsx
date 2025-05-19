@@ -20,7 +20,7 @@ function UserStatus(props) {
                             : props.username}
                     </p>
                     <p className="winsLossesPara">
-                        {props.username && props.username !== "null" 
+                        {props.username && props.username !== "null" && props.score
                             ? `Wins ${props.score[0]} | Losses ${props.score[1]}` 
                             : ""}
                     </p>

@@ -19,7 +19,7 @@ function Home() {
     const presentationMode = true;
     const [roomID, setRoomID] = useState(null);
     const [joinRoomLink, setJoinRoomLink] = useState("");
-    const [username, setUsername] = useState("");
+    const [username, setUsername] = useState(localStorage.getItem("username") ? localStorage.getItem("username") : "😈 Moji Master");
     const navigate = useNavigate();
     const socket = ServerConnection();
 

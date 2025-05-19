@@ -3,7 +3,7 @@
         Relevant user data: username, score (wins/losses), ready state, host state
         See full user object structure in the UserStatus component.
     Ensure navigate function works correctly with server.
-       The generic links are as follows:
+        The generic links are as follows:
         /roomCode/isHost/Page
 
 */
@@ -17,7 +17,7 @@ import ServerConnection from "../components/ServerConnection";
 
 function Lobby() {
     const presentationMode = true
-    const [userUsername, setUserUsername] = useState(null);
+    const [userUsername, setUserUsername] = useState(localStorage.getItem("username") ? localStorage.getItem("username") : "😈 Moji Master");
     const [userScore, setUserScore] = useState();
     const [userIsReady, setUserReady] = useState(false);
     const [username, setUsername] = useState(null);
@@ -35,7 +35,7 @@ function Lobby() {
 
     useEffect(() => {
         if (presentationMode) {
-            setUserUsername("😈 Moji Master")
+            setUserUsername(localStorage.getItem("username"))
             setOpponentUsername("👑 Moticon Champion")
             setOpponentReady(true)
             setUserScore([(Number(localStorage.getItem('wins')) || 0), (Number(localStorage.getItem('losses')) || 0)])
@@ -207,12 +207,12 @@ function Lobby() {
                     Exit Lobby
                 </button>
 
-                <button
+                <button className="button-blue"
                     onClick={() => {
                         localStorage.clear()
                         setUserReady(false)
                     }}>
-                    Cear local storage
+                    Reset Scores
                 </button>
             </ div>
         </div>

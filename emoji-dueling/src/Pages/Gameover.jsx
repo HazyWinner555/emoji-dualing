@@ -24,11 +24,11 @@ function Gameover() {
     const reactionTimes = location.state?.reactionTimes;
 
 
-    const [userUsername, setUserUsername] = useState(null)
+    const [userUsername, setUserUsername] = useState(localStorage.getItem("username") ? localStorage.getItem("username") : "😈 Moji Master")
     const [userWin, setUserWin] = useState()
     const [userIsReady, setUserIsReady] = useState(false)
 
-    const [opponentUsername, setOpponentUsername] = useState(null)
+    const [opponentUsername, setOpponentUsername] = useState(localStorage.getItem("opponentUsername") ? localStorage.getItem("opponentUsername") : "👑 Moticon Champion")
     const [opponentWin, setOpponentWin] = useState()
     const [opponentIsReady, setOpponentReady] = useState(false)
     const [opponentLeft, setOpponentLeft] = useState(false)
@@ -69,7 +69,7 @@ function Gameover() {
     useEffect(() => {                                           // The server should set up usernames & rounds.
         // Set default test usernames if they are not yet set
         if (presentationMode && !userUsername && !opponentUsername) {
-            setUserUsername("😈 Moji Master")
+            setUserUsername(userUsername)
             setOpponentUsername("👑 Moticon Champion")
         }
     }, [presentationMode, userUsername, opponentUsername])
@@ -121,13 +121,13 @@ function Gameover() {
                     localStorage.removeItem("victory")
                     navigate(`/${roomCode}/${userIsHost}/lobby`)
                 }}>
-                    Return to lobby.
+                    Return to Lobby
                 </button>
                 <button className="lc-orange" onClick={() => {
                     localStorage.removeItem("victory")
                     navigate(`/`)
                 }}>
-                    Return to main menu.
+                    Return to Main Menu
                 </button>
             </div>
         </div>

@@ -10,7 +10,7 @@ function RoundSummary(props) {
     }
     return (
         <div className={`roundSummary`}>
-            {props.userEmoji}
+            <span><b>{props.userEmoji}</b> | </span>
             <span className={"round-label"}>
                 Round {props.index}: {" "}
             </span>
