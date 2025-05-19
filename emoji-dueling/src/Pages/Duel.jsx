@@ -45,23 +45,84 @@ function Duel(props) {
     const [roundStart, setRoundStart] = useState(Date.now());
     const [reactionTimes, setReactionTimes] = useState([])
 
+    // Variable that checks if the User won the round or not, for simplicity's sake
+    var userWin = false;
+
     // This is so that we can use useNavigate
     const navigate = useNavigate()
 
     // Random number applied to the timer between each round.
     let delay = 3000;
 
+    // This const contains all of the emojis
+    const mojis = [
+            "😀", "😃", "😄", "😁", "😆", "🥹", "😅", "😂", "🤣", "🥲",
+            "☺️", "😇", "😊", "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘",
+            "😗", "😙", "😚", "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐",
+            "🤓", "😎", "🥸", "🤩", "🥳", "😏", "😒", "😞", "😔", "😟",
+            "😕", "🙁", "☹️", "😣", "😖", "😫", "😩", "🥺", "😢", "😭",
+            "😤", "😠", "🤯", "😳", "😶‍🌫️", "😱", "😨", "😰", "😥", "😓",
+            "🤗", "🤔", "🫣", "🤭", "🫢", "🤫", "🫠", "🤥", "😶", "😐",
+            "🫤", "😑", "🫨", "😬", "🙄", "😯", "😦", "😧", "😮", "😲",
+            "😴", "😮‍💨", "🤐", "😵", "😵‍💫", "🥴"
+            ]
 
+    // This is an empty array for storing all of the emojis currently being used in this round
+    let emojisChosen = [];
+    let thisEmojis = [];
+    let number = 0;
+
+
+    // Gets a random emoji from the Emoji List, picking a different Emoji if the random number selects a duplicate.
+    function getRandomEmoji() {
+                var rand = Math.floor(Math.random() * (mojis.length - 1 + 1)) + 0
+                let different = false
+                while (different = false) {
+                    if (emojisChosen.includes(mojis[rand])) {
+                        rand = Math.floor(Math.random() * (mojis.length - 1 + 1)) + 0
+                    } else {
+                        different = true
+                    }
+                }
+                
+                    return rand
+                
+    }
+                
     // Establish dummy variables for the user, opponent, and the emojis we're using.
     useEffect(() => {
         if (isTesting) {
+
+            thisEmojis = ["?", "?", "?", "?"];
+
             setUserUsername("😈 Moji Master")
             setOpponentUsername("👑 Moticon Champion")
-            setEmojiList(["😈", "👑", "👻", "📋"])
-            setQuestionEmoji("😈")
+            setEmojiList(thisEmojis)
+            setQuestionEmoji(thisEmojis[0])
             setRoundText("Ready...")
         }
     }, ([]))
+
+    // Sets up the 4 emojis that will be used in the round.
+    function setEmojis() {
+
+            thisEmojis = [];
+            emojisChosen = [];
+            number = 0;
+
+            for (let index = -1; index < 3; index++) {
+                number = getRandomEmoji(emojisChosen, mojis)
+
+                emojisChosen.push(number);
+                console.log(emojisChosen)
+                thisEmojis.push(mojis[number]);
+                console.log(mojis[number])
+                
+            }
+            setEmojiList(thisEmojis)
+            setQuestionEmoji(thisEmojis[Math.floor(Math.random() * (3 - 0 + 1)) + 0])
+
+    }
 
     // This handles game over, the end of a round, and moves you to the gameover page
     function handleLifeChange(userLives, opponentLives) {
@@ -83,7 +144,7 @@ function Duel(props) {
             console.log(reactionTimes)
             const moveToGameoverPage = setTimeout(() => {
 
-                navigate(`/${roomCode}/${userIsHostParam}/gameover`, { state: { reactionTimes } })
+                navigate(`/${roomCode}/${userIsHostParam}/gameover`, { state: { reactionTimes, userWin } })
             }, 3000);
 
             return () => clearTimeout(moveToGameoverPage)
@@ -96,14 +157,14 @@ function Duel(props) {
                 setOpponentTapStatus(0)
                 setRoundText("Ready...")
                 setIsRevealed(false)
-                // Pick new emoji                               // UNFINISHED
+                setEmojis()
                 setTimeout(() => {
                     setRoundText("Go!")
                     setRoundStart(Date.now());
                     setIsRevealed(true)
                 }, delay);
             }, delay);
-            delay = 1000 + Math.floor(Math.random() * 5000);
+            delay = 1000 + Math.floor(Math.random() * 3000);
 
 
             return () => clearTimeout(resetRoundVariables);

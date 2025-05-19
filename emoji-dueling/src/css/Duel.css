@@ -32,6 +32,10 @@
     border-radius:0.9375em;
     margin:auto;
     width: 50vh;
+    
+}
+
+.duelCont {
     flex-direction:column;
 }
 

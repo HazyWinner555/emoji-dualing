@@ -91,7 +91,7 @@ function NicknameInput({ onUsernameChange = () => {}, initialUsername = "" }) {
 
     return (
         <div>
-            <p>Nickname 😈</p>
+            <p>Nickname</p>
             <input 
                 type="text" 
                 placeholder={isManuallyCleared ? "Type a nickname or leave empty" : "Moji Master 😈"} 

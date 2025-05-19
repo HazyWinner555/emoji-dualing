@@ -51,30 +51,6 @@
     font-size: x-large;
 }
 
-.gameoverContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    height: 90vh;
-}
-
-.userStatusContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 15px;
-    border-radius: 10px;
-    height: 40px;
-    width: 300px;
-}
-
-.winnerContainer {
-    background-color: rgb(255, 176, 0);
-    border: 3px solid rgb(104, 69, 3);
-}
-
 .winnerContainer .userEmoji {
     position: relative;
     display: inline-block;
@@ -104,6 +80,11 @@
     color: red;
     background-color: transparent;
 
+}
+
+.roundSummary {
+    margin-top:1em;
+    margin-bottom:1em;
 }
 
 .rematchButton {
