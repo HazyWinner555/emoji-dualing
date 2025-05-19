@@ -91,12 +91,12 @@ function Gameover() {
         <div className="logo-background">
             {userWin ? <>
                 <h1> VICTORY </h1>
-                <UserStatus winner={userWin} username={userUsername} view="gameover" />
-                <UserStatus winner={opponentWin} username={opponentUsername} view="gameover" />
+                <UserStatus winner={true} username={userUsername} view="gameover" />
+                <UserStatus winner={false} username={opponentUsername} view="gameover" />
             </> : <>
                 <h1> DEFEAT </h1>
-                <UserStatus winner={opponentWin} username={opponentUsername} view="gameover" />
-                <UserStatus winner={userWin} username={userUsername} view="gameover" />
+                <UserStatus winner={false} username={userUsername} view="gameover" />
+                <UserStatus winner={true} username={opponentUsername} view="gameover" />
             </>}
             <div className="roundSummaryContainer">
                 {rounds.map((round, index) => {
@@ -109,8 +109,8 @@ function Gameover() {
             <button className={`rematch-button ${rematchButtonClassName}`} onClick={() => {
                 handleReady()
             }}> {opponentLeft ? "Cannot rematch. Opponent left room." : ""}{userIsReady && !opponentLeft ? "" : "Rematch!"} {userIsReady && !opponentIsReady && !opponentLeft ? "Waiting for opponent..." : ""}</button>
-            <button className="button-blue" onClick={() => { navigate(`/${roomCode}/${userIsHost}/lobby`) }}>Return to lobby.</button>
-            <button className="lc-orange" onClick={() => { navigate(`/`) }}>Return to main menu.</button>
+            <button className="button-blue" onClick={() => { navigate(`/${roomCode}/${userIsHost}/lobby`) }}>Return to Lobby</button>
+            <button className="lc-orange" onClick={() => { navigate(`/`) }}>Return to Main Menu</button>
             </div>
         </div>
     )
