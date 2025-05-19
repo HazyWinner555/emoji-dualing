@@ -206,8 +206,15 @@ function Lobby() {
             >
                 Exit Lobby
             </button>
-            </div>
-        </div>
+
+            <button
+                onClick={() => {
+                    localStorage.clear()
+                    setUserReady(false)
+                }}>
+                Cear local storage
+            </button>
+        </div >
     );
 }
 
