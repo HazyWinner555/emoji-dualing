@@ -1,21 +1,31 @@
 .default {
     background-color: gray;
-    border-color:#5d5d5d;
+    border-color: #5d5d5d;
 }
 
 .dark {
     background-color: rgb(70, 70, 70);
-    border-color:#5d5d5d;
+    border-color: #5d5d5d;
 }
 
 .incorrect {
     background-color: red;
-    border-color:maroon;
+    border-color: maroon;
 }
 
 .correct {
     background-color: green;
-    border-color:darkgreen;
+    border-color: darkgreen;
+}
+
+.opponent-incorrect {
+    background-color: rgb(156, 2, 2);
+    border-color: rgb(77, 1, 1);
+}
+
+.correct {
+    background-color: rgb(0, 85, 0);
+    border-color: rgb(0, 46, 0);
 }
 
 .userStatusContainer {
@@ -26,17 +36,17 @@
     min-height: 5em;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     align-items: center;
-    color:white;
-    border-width:0.1875em;
-    border-style:solid;
-    border-radius:0.9375em;
-    margin:auto;
+    color: white;
+    border-width: 0.1875em;
+    border-style: solid;
+    border-radius: 0.9375em;
+    margin: auto;
     width: 50vh;
-    
+
 }
 
 .duelCont {
-    flex-direction:column;
+    flex-direction: column;
 }
 
 
@@ -54,11 +64,11 @@
 
 .question-emoji-container {
     font-size: 12em;
-    background-color:#808080;
-    width:1.5em;
-    margin:auto;
-    margin:0.1em auto;
-    border-radius:0.1em;
+    background-color: #808080;
+    width: 1.5em;
+    margin: auto;
+    margin: 0.1em auto;
+    border-radius: 0.1em;
     border: solid 0.03em #5d5d5d;
     text-shadow: -2px -2px 0 #5d5d5d, 2px -2px 0 #5d5d5d, -2px 2px 0 #5d5d5d, 2px 2px 0 #5d5d5d;
 }
@@ -68,7 +78,7 @@
 }
 
 .emoji-input-container {
-    margin-bottom:3em;
+    margin-bottom: 3em;
 }
 
 
@@ -81,5 +91,5 @@
 }
 
 .hearts {
-    font-size:2em;
+    font-size: 2em;
 }

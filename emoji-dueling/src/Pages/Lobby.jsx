@@ -40,7 +40,12 @@ function Lobby() {
             setOpponentReady(true)
             setUserScore([(Number(localStorage.getItem('wins')) || 0), (Number(localStorage.getItem('losses')) || 0)])
             setOpponentScore([(Number(localStorage.getItem('losses')) || 0), (Number(localStorage.getItem('wins')) || 0)])
-
+            if (!localStorage.getItem("wins")) {
+                localStorage.setItem("wins", 0)
+            }
+            if (!localStorage.getItem("losses")) {
+                localStorage.setItem("losses", 0)
+            }
         }
         else {
             if (!socket || socket.readyState !== WebSocket.OPEN) {

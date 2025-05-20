@@ -35,14 +35,14 @@ function Gameover() {
 
     const [rounds, setRounds] = useState([])
     const [rematchButtonClassName, setRematchButtonClassName] = useState("rematchButtonUnready")
+    var victory
     useEffect(() => {
-        const victory = localStorage.getItem("victory") === "true";
+        victory = localStorage.getItem("victory") === "true";
         setUserWin(victory)
         setOpponentWin(!victory)
     }, ([]))
 
     function handleReady(e) {
-        console.log(userIsReady)
         // The server should probably handle readying and unreadying.
         if (opponentLeft) {
             setRematchButtonClassName("opponentLeft")
@@ -55,7 +55,6 @@ function Gameover() {
             setRematchButtonClassName("rematchButtonReady")
             setUserIsReady(!userIsReady)
         }
-        console.log(userIsReady)
     }
 
     // the server should be able to tell when the opponent has left.
@@ -96,16 +95,18 @@ function Gameover() {
 
     return (
         <div className="logo-background">
-            {userWin ? <>
-                {console.log(userWin)}
-                <h1> VICTORY </h1>
-                <UserStatus winner={true} username={userUsername} view="gameover" />
-                <UserStatus winner={false} username={opponentUsername} view="gameover" />
-            </> : <>
-                <h1> DEFEAT </h1>
-                <UserStatus winner={false} username={userUsername} view="gameover" />
-                <UserStatus winner={true} username={opponentUsername} view="gameover" />
-            </>}
+            {userWin ?
+                <>
+                    <h1> VICTORY </h1>
+                    <UserStatus winner={true} username={userUsername} view="gameover" />
+                    <UserStatus winner={false} username={opponentUsername} view="gameover" />
+                </>
+                :
+                <>
+                    <h1> DEFEAT </h1>
+                    <UserStatus winner={true} username={opponentUsername} view="gameover" />
+                    <UserStatus winner={false} username={userUsername} view="gameover" onClick={() => { console.log(userWin) }} />
+                </>}
             <div className="roundSummaryContainer">
                 {rounds.map((round, index) => {
                     return (<RoundSummary index={index} userEmoji={extractUserEmoji(rounds[index][0])} time={rounds[index][1]} isCorrect={rounds[index][2]} />)

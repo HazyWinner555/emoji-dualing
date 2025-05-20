@@ -57,9 +57,16 @@ function EmojiInput(props) {
         if (props.questionEmoji === props.emoji && (props.opponentTapStatus > 0 || props.playerTapStatus > 0)) { // then the player was correct && this was the one that they tapped && this is the correct emoji
             answerEmojiClass = "correct"
         }
-        else if (props.playerTapEmoji === props.emoji && props.playerTapStatus == 1) { // then the player was incorrect && the player tapped THIS one
+        else if ((props.playerTapEmoji === props.emoji && props.playerTapStatus == 1)) { // then the player was incorrect && the player tapped THIS one
             answerEmojiClass = "incorrect"
         }
+        else if (props.opponentTapStatus == 2 && props.emoji) {
+            answerEmojiClass = "opponent-incorrect"
+        }
+        else if (props.opponentTapStatus == 1 && props.emoji == props.questionEmoji) {
+            answerEmojiClass = "opponent-correct"
+        }
+        console.log(answerEmojiClass, props.emoji)
 
         return (
             <>
