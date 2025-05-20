@@ -60,13 +60,12 @@ function EmojiInput(props) {
         else if ((props.playerTapEmoji === props.emoji && props.playerTapStatus == 1)) { // then the player was incorrect && the player tapped THIS one
             answerEmojiClass = "incorrect"
         }
-        else if (props.opponentTapStatus == 2 && props.emoji) {
+        else if (props.opponentTapStatus == 2 && props.emoji == props.opponentTapEmoji) {
             answerEmojiClass = "opponent-incorrect"
         }
         else if (props.opponentTapStatus == 1 && props.emoji == props.questionEmoji) {
             answerEmojiClass = "opponent-correct"
         }
-        console.log(answerEmojiClass, props.emoji)
 
         return (
             <>

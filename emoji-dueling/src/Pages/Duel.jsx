@@ -34,6 +34,7 @@ function Duel(props) {
     const [isRevealed, setIsRevealed] = useState(false)
     const [playerTapEmoji, setPlayerTapEmoji] = useState(null)                    // playerTapEmoji, playerTapStatus, and opponentTapStatus are all for validating taps & locking out once either responds.
     const [playerTapStatus, setPlayerTapStatus] = useState(0)
+    const [opponentTapEmoji, setOpponentTapEmoji] = useState(null)
     const [opponentTapStatus, setOpponentTapStatus] = useState(0)
 
     // gameover ensures that no further taps are made once the game ends
@@ -103,30 +104,31 @@ function Duel(props) {
 
     useEffect(() => {
         if (isRevealed && !(playerTapStatus > 0)) {
-            let randSeconds = Math.floor((Math.random() * 2000) + 750)
+            let randSeconds = Math.floor((Math.random() * 1500) + 750)
             let randEmoji
             let randIncorrect
             randEmoji = Math.floor((Math.random() * 4) + 0)
             if (randSeconds >= 750 && randSeconds < 1250) {
                 randIncorrect = Math.floor((Math.random() * 3))
-                console.log("1250-" + randIncorrect)
                 if (randIncorrect == 0) {
                     randEmoji = emojiList.indexOf(questionEmoji)
                 }
             }
             else if (randSeconds >= 1250) {
                 randIncorrect = Math.floor((Math.random() * 2))
-                console.log("1250+ " + randIncorrect)
                 if (randIncorrect == 0) {
                     randEmoji = emojiList.indexOf(questionEmoji)
                 }
             }
             const pickRandom = setTimeout(() => {
-                submitOpponentTapStatus(emojiList[randEmoji])
+                handleOpponentTap(emojiList[randEmoji])
             }, randSeconds);
             return () => clearTimeout(pickRandom)
         }
     }, ([isRevealed, playerTapStatus]))
+
+
+
 
     // Sets up the 4 emojis that will be used in the round.
     function setEmojis() {
@@ -166,7 +168,7 @@ function Duel(props) {
             const moveToGameoverPage = setTimeout(() => {
 
                 navigate(`/${roomCode}/${userIsHostParam}/gameover`, { state: { reactionTimes } })
-            }, 3000);
+            }, 5000);
 
             return () => clearTimeout(moveToGameoverPage)
         }
@@ -176,6 +178,8 @@ function Duel(props) {
             const resetRoundVariables = setTimeout(() => {
                 setPlayerTapStatus(0)
                 setOpponentTapStatus(0)
+                setPlayerTapEmoji(null)
+                setOpponentTapEmoji(null)
                 setRoundText("Ready...")
                 setIsRevealed(false)
                 setEmojis()
@@ -185,7 +189,7 @@ function Duel(props) {
                     setIsRevealed(true)
                 }, delay);
             }, delay);
-            delay = 1000 + Math.floor(Math.random() * 3000);
+            delay = 3000 + Math.floor(Math.random() * 1000);
 
 
             return () => clearTimeout(resetRoundVariables);
@@ -235,20 +239,21 @@ function Duel(props) {
 
     }
 
-    function submitOpponentTapStatus(emoji) {
+    function handleOpponentTap(emoji) {
         if (isTesting) {
             if (!(playerTapStatus > 0) && !(opponentTapStatus > 0) && !gameover && userLives > 0 && opponentLives > 0) {
                 // if nobody's tapped yet, and the game isn't over
                 if (roundStart) {
+                    setOpponentTapEmoji(emoji)
                     const timeElapsed = endRound(opponentUsername, emoji === questionEmoji)
                     if (emoji === questionEmoji) { // correct opponent tap
                         setOpponentTapStatus(1) // opp incorrect
                         setUserLives(userLives - 1);
-                        setRoundText(`Too slow (bot tap: ${emoji})` + (timeElapsed / 1000) + "s")
+                        setRoundText(`They're quick! ` + (timeElapsed / 1000) + "s")
                     } else {
                         setOpponentTapStatus(2) // opp correct
                         setOpponentLives(opponentLives - 1);
-                        setRoundText(`Free Win! (bot tap: ${emoji})` + (timeElapsed / 1000) + "s")
+                        setRoundText(`They fumbled! ` + (timeElapsed / 1000) + "s")
                     }
                 }
 
@@ -282,7 +287,7 @@ function Duel(props) {
                         {emojiList.map((index, key) => {
                             return (<EmojiInput key={key}
                                 emoji={index} isQuestion={false}
-                                questionEmoji={questionEmoji} playerTapEmoji={playerTapEmoji}
+                                questionEmoji={questionEmoji} playerTapEmoji={playerTapEmoji} opponentTapEmoji={opponentTapEmoji}
                                 opponentTapStatus={opponentTapStatus} playerTapStatus={playerTapStatus} isRevealed={isRevealed}
                                 onPlayerTap={handlePlayerTap} // Pass the function!
                             />)
@@ -295,12 +300,12 @@ function Duel(props) {
                     <div>
                         <button onClick={() => {
                             if (isRevealed) {
-                                submitOpponentTapStatus("😈")
+                                handleOpponentTap("😈")
                             }
                         }} >Test Opponent Reaction😈</button>
                         <button onClick={() => {
                             if (isRevealed) {
-                                submitOpponentTapStatus("👑")
+                                handleOpponentTap("👑")
                             }
                         }} >Test Opponent Reaction👑</button>
                     </div>

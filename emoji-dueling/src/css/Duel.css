@@ -23,7 +23,7 @@
     border-color: rgb(77, 1, 1);
 }
 
-.correct {
+.opponent-correct {
     background-color: rgb(0, 85, 0);
     border-color: rgb(0, 46, 0);
 }
